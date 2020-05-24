@@ -3,6 +3,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/item_home"
-            android:title="@string/home" />
+            android:title="@string/home"
+            android:checked="true" />
     </group>
 </menu>
