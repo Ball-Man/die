@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dialog_padding">20dp</dimen>
+    <dimen name="report_line_min_width">40dp</dimen>
+    <dimen name="dialog_done_margin">80dp</dimen>
+    <dimen name="dialog_line_margin">60dp</dimen>
+</resources>

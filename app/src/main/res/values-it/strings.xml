@@ -1,3 +1,4 @@
 <resources>
-
+    <string name="note">Note</string>
+    <string name="dialog_report_title">Inserisci un nuovo report</string>
 </resources>

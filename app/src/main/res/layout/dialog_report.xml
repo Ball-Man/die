@@ -1,11 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/dialog_padding">
 
-    <TextView
+    <include
+        android:id="@+id/first_line"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TEST" />
+        android:layout_marginTop="@dimen/dialog_line_margin"
+        layout="@layout/layout_input_report" />
+
+    <include
+        android:id="@+id/second_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dialog_line_margin"
+        layout="@layout/layout_input_report" />
+
+    <EditText
+        android:id="@+id/notes"
+        android:layout_marginHorizontal="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/note"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/done"
+        android:text="@string/done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dialog_line_margin"
+        android:gravity="end"
+        android:clickable="true"
+        android:focusable="true" />
 
 </LinearLayout>

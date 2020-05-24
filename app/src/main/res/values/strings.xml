@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Dont Die Please</string>
     <string name="home">Home</string>
+    <string name="note">Notes</string>
+    <string name="done">Done</string>
+    <string name="dialog_report_title">Insert a new report</string>
 </resources>
