@@ -9,7 +9,7 @@ import it.fmistri.dontdieplease.db.DieDatabase;
 /**
  * Adapt database model to the view(ReportDialogFragment).
  */
-public class ReportDialogModel extends ViewModel {
+public class ReportDialogViewModel extends ViewModel {
     LiveData<Category[]> categories;
 
     /**
