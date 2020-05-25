@@ -2,10 +2,12 @@ package it.fmistri.dontdieplease.db.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Insert;
 import androidx.room.Query;
 
 import java.util.Date;
 
+import it.fmistri.dontdieplease.db.Report;
 import it.fmistri.dontdieplease.db.ReportWithEntries;
 import it.fmistri.dontdieplease.db.SummaryReport;
 
@@ -16,4 +18,7 @@ public interface ReportDAO {
 
     @Query("SELECT * FROM `Report`")
     public  LiveData<ReportWithEntries[]> getReportsWithEntries();
+
+    @Insert
+    public void addReport(Report report);
 }
