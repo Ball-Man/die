@@ -42,7 +42,8 @@ public class HomeFragment extends Fragment {
      */
     private void click() {
         Log.d("HOME", "button pressed");
-        new ReportDialogFragment().show(getChildFragmentManager(), "report_dialog");
+        ReportDialogFragment.newInstance(false, 0)
+                .show(getChildFragmentManager(), "report_dialog");
     }
 
     //    /**

@@ -21,15 +21,59 @@ import androidx.lifecycle.ViewModelProvider;
 
 import it.fmistri.dontdieplease.R;
 import it.fmistri.dontdieplease.db.Category;
+import it.fmistri.dontdieplease.db.ReportWithEntries;
 
 public class ReportDialogFragment extends DialogFragment {
-    ReportDialogViewModel viewModel;
+    private static String EDIT_ARG_KEY = "edit";
+    private static String REPORT_ARG_KEY = "report_index";
 
-    Spinner[] spinners;
+    private ReportDialogViewModel viewModel;
+
+    private Spinner[] spinners;
+
+    // Parameters
+    private boolean edit;
+    private int report_index;
+
+    /**
+     * Instantiate a new fragment.
+     * A ReportDialogFragment can be in 'insertion' or 'editing' mode. When in insertion mode, a
+     * new report will be created from the user input. When in editing mode, the fragment will be
+     * populated with previously existing data and the user will be able to update it(the actual
+     * report data will be accessed from a given index that will be looked up in a cached array
+     * of ReportWithEntries).
+     * @param edit Whether this fragment instance is for the insertion of a new report or is
+     *             for editing a previously added report.
+     * @param report_index The report index used for lookup in a ReportWithEntries array(this value
+     *                     isn't used if edit = false).
+     * @return A new fragment instance.
+     */
+    public static ReportDialogFragment newInstance(boolean edit, int report_index) {
+        // Create a bundle of arguments
+        Bundle args = new Bundle();
+        args.putBoolean(EDIT_ARG_KEY, edit);
+        args.putInt(REPORT_ARG_KEY, report_index);
+
+        // Create the fragment and set the arguments
+        ReportDialogFragment fragment = new ReportDialogFragment();
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Retrieve arguments
+        edit = getArguments().getBoolean(EDIT_ARG_KEY, false);
+        report_index = getArguments().getInt(REPORT_ARG_KEY, 0);
+    }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         // Set dialog title
         getDialog().setTitle(R.string.dialog_report_title);
 
