@@ -25,7 +25,7 @@ import it.fmistri.dontdieplease.db.ReportWithEntries;
 
 public class ReportDialogFragment extends DialogFragment {
     private static String EDIT_ARG_KEY = "edit";
-    private static String REPORT_ARG_KEY = "report_index";
+    private static String REPORT_ARG_KEY = "report_id";
 
     private ReportDialogViewModel viewModel;
 
@@ -33,26 +33,28 @@ public class ReportDialogFragment extends DialogFragment {
 
     // Parameters
     private boolean edit;
-    private int report_index;
+    private int report_id;
+
+    private ReportWithEntries report;
 
     /**
      * Instantiate a new fragment.
      * A ReportDialogFragment can be in 'insertion' or 'editing' mode. When in insertion mode, a
      * new report will be created from the user input. When in editing mode, the fragment will be
      * populated with previously existing data and the user will be able to update it(the actual
-     * report data will be accessed from a given index that will be looked up in a cached array
-     * of ReportWithEntries).
+     * report data will be accessed from a given id that will be looked up in the db(thanks to
+     * the ViewModel).
      * @param edit Whether this fragment instance is for the insertion of a new report or is
      *             for editing a previously added report.
-     * @param report_index The report index used for lookup in a ReportWithEntries array(this value
+     * @param report_id The report index used for lookup in a ReportWithEntries array(this value
      *                     isn't used if edit = false).
      * @return A new fragment instance.
      */
-    public static ReportDialogFragment newInstance(boolean edit, int report_index) {
+    public static ReportDialogFragment newInstance(boolean edit, int report_id) {
         // Create a bundle of arguments
         Bundle args = new Bundle();
         args.putBoolean(EDIT_ARG_KEY, edit);
-        args.putInt(REPORT_ARG_KEY, report_index);
+        args.putInt(REPORT_ARG_KEY, report_id);
 
         // Create the fragment and set the arguments
         ReportDialogFragment fragment = new ReportDialogFragment();
@@ -67,7 +69,7 @@ public class ReportDialogFragment extends DialogFragment {
 
         // Retrieve arguments
         edit = getArguments().getBoolean(EDIT_ARG_KEY, false);
-        report_index = getArguments().getInt(REPORT_ARG_KEY, 0);
+        report_id = getArguments().getInt(REPORT_ARG_KEY, 0);
     }
 
     @Nullable
@@ -98,6 +100,21 @@ public class ReportDialogFragment extends DialogFragment {
                 changedCategories(categories);
             }
         });
+
+        // If in 'edit mode', observe the report in order to update the UI.
+        // If in 'insert mode', create an empty report that will be populated when the user
+        // confirms.
+        report = new ReportWithEntries();
+
+        if (edit)
+            // Edit mode
+            viewModel.getReport(report_id).observe(getViewLifecycleOwner(),
+                    new Observer<ReportWithEntries>() {
+                @Override
+                public void onChanged(ReportWithEntries report) {
+                    // TODO: edit mode, update UI
+                }
+            });
 
         // Set callback for the 'done' button
         ((TextView) view.findViewById(R.id.done)).setOnClickListener(new View.OnClickListener() {

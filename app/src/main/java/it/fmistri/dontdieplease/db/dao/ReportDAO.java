@@ -19,6 +19,9 @@ public interface ReportDAO {
     @Query("SELECT * FROM `Report`")
     public  LiveData<ReportWithEntries[]> getReportsWithEntries();
 
+    @Query("SELECT * FROM `Report` WHERE `r_id`=:id")
+    public LiveData<ReportWithEntries> getReportWithEntries(Integer id);
+
     @Insert
     public void addReport(Report report);
 }
