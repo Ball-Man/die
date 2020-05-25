@@ -1,4 +1,10 @@
 <resources>
+    <!-- Dialog -->
     <string name="note">Note</string>
     <string name="dialog_report_title">Inserisci un nuovo report</string>
+
+    <!-- Categories -->
+    <string name="heart">Battiti cardiaci</string>
+    <string name="temperature">Temperatura corporea</string>
+    <string name="pressure">Pressione del sangue</string>
 </resources>

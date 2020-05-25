@@ -1,8 +1,17 @@
 <resources>
     <string name="app_name">Dont Die Please</string>
+
+    <!-- Drawer -->
     <string name="home">Home</string>
+
+    <!-- Dialog -->
     <string name="note">Notes</string>
     <string name="done">Done</string>
     <string name="dialog_report_title">Insert a new report</string>
     <string name="value">Value</string>
+
+    <!-- Categories -->
+    <string name="heart">Heartbeats per minute</string>
+    <string name="temperature">Body temperature</string>
+    <string name="pressure">Blood pressure</string>
 </resources>

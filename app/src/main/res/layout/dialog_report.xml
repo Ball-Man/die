@@ -16,7 +16,6 @@
         android:id="@+id/second_line"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dialog_line_margin"
         layout="@layout/layout_input_report" />
 
     <EditText
@@ -25,7 +24,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/note"
-        android:inputType="text" />
+        android:inputType="text"
+        android:layout_marginTop="@dimen/dialog_line_margin_small"/>
 
     <TextView
         android:id="@+id/done"

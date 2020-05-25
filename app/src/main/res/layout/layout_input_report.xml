@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
-    android:layout_width="wrap_content">
+    android:layout_width="wrap_content"
+    android:orientation="vertical"
+    android:layout_gravity="start" >
 
     <Spinner
         android:id="@+id/category_spinner"
@@ -13,6 +15,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minWidth="@dimen/report_line_min_width"
-        android:hint="@string/value"
-        android:layout_marginStart="@dimen/dialog_line_margin" />
+        android:hint="@string/value" />
 </LinearLayout>

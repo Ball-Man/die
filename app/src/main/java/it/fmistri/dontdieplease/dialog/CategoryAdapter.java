@@ -35,7 +35,11 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.spinner_item, parent, false);
 
         Category category = getItem(position);
-        ((TextView) convertView.findViewById(R.id.text)).setText(category.name);
+
+        int stringId = getContext().getResources().getIdentifier(category.name,
+                "string", getContext().getPackageName());
+        String localizedString = getContext().getResources().getString(stringId);
+        ((TextView) convertView.findViewById(R.id.text)).setText(localizedString);
 
         return convertView;
     }
