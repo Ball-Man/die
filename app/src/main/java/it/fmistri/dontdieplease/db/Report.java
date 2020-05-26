@@ -11,7 +11,7 @@ import java.util.Date;
 @TypeConverters(DateConverter.class)
 public class Report {
     @PrimaryKey(autoGenerate = true)
-    public Integer r_id;
+    public Long r_id;
 
     @ColumnInfo
     public String note;

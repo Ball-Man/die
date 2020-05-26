@@ -39,8 +39,6 @@ public class ReportDialogViewModel extends ViewModel {
         return report;
     }
 
-
-
     /**
      * Add a report to the DB using a composite object(ReportWithEntries).
      * The object will be inserted subdividing its Report and its Entries that will be independently
@@ -52,9 +50,8 @@ public class ReportDialogViewModel extends ViewModel {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                DieDatabase.getInstance(null).reportDAO().addReport(report.report);
-                DieDatabase.getInstance(null).entryDAO().addEntries(
-                        report.entries.toArray(new Entry[0]));
+                DieDatabase.getInstance(null).reportDAO().addReportWithEntries(
+                        report.report, report.entries.toArray(new Entry[0]));
             }
         });
     }

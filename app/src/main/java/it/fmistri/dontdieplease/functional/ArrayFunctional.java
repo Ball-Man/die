@@ -20,7 +20,7 @@ public class ArrayFunctional {
      * @return A java.util.Collection resulting from the given array and function
      *         (note that an array can't be returned due to generics limitations).
      */
-    static <TInput, TOutput> Collection<TOutput> map(Function<TInput, TOutput> function,
+    public static <TInput, TOutput> Collection<TOutput> map(Function<TInput, TOutput> function,
                                            TInput... array) {
         Vector<TOutput> output = new Vector<TOutput>();
         for (TInput element : array)

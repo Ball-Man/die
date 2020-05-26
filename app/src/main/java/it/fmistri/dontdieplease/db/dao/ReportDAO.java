@@ -3,25 +3,47 @@ package it.fmistri.dontdieplease.db.dao;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Transaction;
 
 import java.util.Date;
 
+import it.fmistri.dontdieplease.db.DieDatabase;
+import it.fmistri.dontdieplease.db.Entry;
 import it.fmistri.dontdieplease.db.Report;
 import it.fmistri.dontdieplease.db.ReportWithEntries;
 import it.fmistri.dontdieplease.db.SummaryReport;
 
 @Dao
-public interface ReportDAO {
-    @Query("SELECT AVG(`value`) as `avg_value`, `date`, `category_name` FROM `Report` INNER JOIN `Entry` ON `report_id`=`r_id` INNER JOIN `Category` ON `category_name`=`name` WHERE `date`=:date GROUP BY `date`, `category_name`")
-    public LiveData<SummaryReport[]> getSummary(Date date);
+public abstract class ReportDAO {
+    @Query("SELECT AVG(`value`) as `avg_value`, `date`, `category_name` FROM `Report` " +
+            "INNER JOIN `Entry` ON `report_id`=`r_id` " +
+            "INNER JOIN `Category` ON `category_name`=`name` " +
+            "WHERE `date`=:date GROUP BY `date`, `category_name`")
+    public abstract LiveData<SummaryReport[]> getSummary(Date date);
 
+    @Transaction
     @Query("SELECT * FROM `Report`")
-    public  LiveData<ReportWithEntries[]> getReportsWithEntries();
+    public abstract LiveData<ReportWithEntries[]> getReportsWithEntries();
 
+    @Transaction
     @Query("SELECT * FROM `Report` WHERE `r_id`=:id")
-    public LiveData<ReportWithEntries> getReportWithEntries(Integer id);
+    public abstract LiveData<ReportWithEntries> getReportWithEntries(Integer id);
 
     @Insert
-    public void addReport(Report report);
+    public abstract long addReport(Report report);
+
+    @Transaction
+    public void addReportWithEntries(Report report, Entry... entries) {
+        // Insert report and get the id
+        long report_id = addReport(report);
+
+        // Set the resulted id to the entries and add them
+        DieDatabase db = DieDatabase.getInstance(null);
+        for (Entry entry : entries) {
+            entry.report_id = report_id;
+            db.entryDAO().addEntries(entry);
+        }
+    }
 }

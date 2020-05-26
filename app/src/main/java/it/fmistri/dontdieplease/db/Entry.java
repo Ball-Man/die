@@ -15,7 +15,7 @@ import androidx.room.ForeignKey;
 public class Entry {
     @ColumnInfo
     @NonNull
-    public Integer report_id = 0;
+    public Long report_id = 0L;
 
     @ColumnInfo
     @NonNull
