@@ -8,6 +8,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 
+import android.app.FragmentManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +24,8 @@ import it.fmistri.dontdieplease.db.DieDatabase;
 import it.fmistri.dontdieplease.home.HomeFragment;
 
 public class MainActivity extends AppCompatActivity {
+    static String FRAGMENT_MAIN_TAG = "fragment_main";
+
     DieDatabase db;
 
     DrawerLayout drawerLayout;
@@ -63,12 +66,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("DieDB", ((Integer)categories.length).toString());
             }
         });
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        });
     }
 
     @Override
@@ -106,9 +103,14 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Fragment transaction that replaces R.id.fragment_main with an instance
      * of the given class.
+     * The stack will be cleared.
      * @param frag_class The class of the fragment to create.
      */
     private void replaceFragment(@NonNull Class frag_class) {
+        // Clear the backstack
+        getSupportFragmentManager()
+                .popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
         try {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_main, (Fragment) frag_class.newInstance())
