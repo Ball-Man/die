@@ -3,6 +3,7 @@
 
     <!-- Drawer -->
     <string name="home">Home</string>
+    <string name="calendar">Calendar</string>
 
     <!-- Dialog -->
     <string name="note">Notes</string>

@@ -19,6 +19,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.Objects;
 
+import it.fmistri.dontdieplease.calendar.CalendarFragment;
 import it.fmistri.dontdieplease.db.Category;
 import it.fmistri.dontdieplease.db.DieDatabase;
 import it.fmistri.dontdieplease.home.HomeFragment;
@@ -88,8 +89,13 @@ public class MainActivity extends AppCompatActivity {
         // Select the fragment type to instantiate
         Class cl;
         switch (item.getItemId()) {
+            case R.id.item_calendar:
+                cl = CalendarFragment.class;
+                break;
+
             default:
                 cl = HomeFragment.class;
+                break;
         }
 
         // Create and replace the fragment

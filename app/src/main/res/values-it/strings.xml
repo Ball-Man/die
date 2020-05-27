@@ -1,4 +1,7 @@
 <resources>
+    <!-- Drawer -->
+    <string name="calendar">Calendario</string>
+
     <!-- Dialog -->
     <string name="note">Note</string>
     <string name="dialog_report_title">Inserisci un nuovo report</string>
