@@ -9,20 +9,16 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 
 import android.app.FragmentManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Button;
 
 import com.google.android.material.navigation.NavigationView;
-
-import java.util.Objects;
 
 import it.fmistri.dontdieplease.calendar.CalendarFragment;
 import it.fmistri.dontdieplease.db.Category;
 import it.fmistri.dontdieplease.db.DieDatabase;
-import it.fmistri.dontdieplease.home.HomeFragment;
+import it.fmistri.dontdieplease.fragment.home.HomeFragment;
 
 public class MainActivity extends AppCompatActivity {
     static String FRAGMENT_MAIN_TAG = "fragment_main";

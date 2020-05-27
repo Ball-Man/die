@@ -1,4 +1,4 @@
-package it.fmistri.dontdieplease.home;
+package it.fmistri.dontdieplease.fragment.home;
 
 import android.os.Bundle;
 import android.util.Log;
