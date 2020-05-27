@@ -1,5 +1,6 @@
 package it.fmistri.dontdieplease.dialog;
 
+import android.app.Dialog;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
@@ -50,6 +51,11 @@ public class ReportDialogFragment extends DialogFragment {
     private int report_id;
 
     private ReportWithEntries report;
+
+    public ReportDialogFragment() {
+        // Persist on configuration changes
+        setRetainInstance(true);
+    }
 
     /**
      * Instantiate a new fragment.
@@ -173,6 +179,16 @@ public class ReportDialogFragment extends DialogFragment {
 
         window.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
         window.setGravity(Gravity.CENTER);
+    }
+
+    @Override
+    public void onDestroyView() {
+        Dialog dialog = getDialog();
+        // handles https://code.google.com/p/android/issues/detail?id=17423
+        if (dialog != null && getRetainInstance()) {
+            dialog.setDismissMessage(null);
+        }
+        super.onDestroyView();
     }
 
     /**
