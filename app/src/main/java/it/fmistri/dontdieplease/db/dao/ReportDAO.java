@@ -3,7 +3,6 @@ package it.fmistri.dontdieplease.db.dao;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
 
@@ -13,7 +12,7 @@ import it.fmistri.dontdieplease.db.DieDatabase;
 import it.fmistri.dontdieplease.db.Entry;
 import it.fmistri.dontdieplease.db.Report;
 import it.fmistri.dontdieplease.db.ReportWithEntries;
-import it.fmistri.dontdieplease.db.SummaryReport;
+import it.fmistri.dontdieplease.db.AverageEntry;
 
 @Dao
 public abstract class ReportDAO {
@@ -21,7 +20,7 @@ public abstract class ReportDAO {
             "INNER JOIN `Entry` ON `report_id`=`r_id` " +
             "INNER JOIN `Category` ON `category_name`=`name` " +
             "WHERE `date`=:date GROUP BY `date`, `category_name`")
-    public abstract LiveData<SummaryReport[]> getSummary(Date date);
+    public abstract LiveData<AverageEntry[]> getSummary(Date date);
 
     @Transaction
     @Query("SELECT * FROM `Report`")

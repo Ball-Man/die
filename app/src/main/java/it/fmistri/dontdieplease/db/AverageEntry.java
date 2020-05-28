@@ -6,7 +6,7 @@ import androidx.room.TypeConverters;
 import java.util.Date;
 
 @TypeConverters(DateConverter.class)
-public class SummaryReport {
+public class AverageEntry {
     @ColumnInfo
     public double avg_value;
 
