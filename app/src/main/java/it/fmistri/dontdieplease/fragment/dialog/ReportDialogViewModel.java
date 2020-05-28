@@ -1,4 +1,4 @@
-package it.fmistri.dontdieplease.dialog;
+package it.fmistri.dontdieplease.fragment.dialog;
 
 import android.os.AsyncTask;
 

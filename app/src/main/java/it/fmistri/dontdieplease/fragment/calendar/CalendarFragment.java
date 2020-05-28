@@ -1,4 +1,4 @@
-package it.fmistri.dontdieplease.calendar;
+package it.fmistri.dontdieplease.fragment.calendar;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import it.fmistri.dontdieplease.R;
-import it.fmistri.dontdieplease.dialog.ReportDialogFragment;
 
 /**
  * Fragment implementation for the calendar tab of the application.

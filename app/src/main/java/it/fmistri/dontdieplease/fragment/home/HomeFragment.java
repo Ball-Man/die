@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import it.fmistri.dontdieplease.R;
-import it.fmistri.dontdieplease.dialog.ReportDialogFragment;
+import it.fmistri.dontdieplease.fragment.dialog.ReportDialogFragment;
 
 /**
  * Fragment implementation for the home tab of the application.

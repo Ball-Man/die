@@ -15,7 +15,7 @@ import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 
-import it.fmistri.dontdieplease.calendar.CalendarFragment;
+import it.fmistri.dontdieplease.fragment.calendar.CalendarFragment;
 import it.fmistri.dontdieplease.db.Category;
 import it.fmistri.dontdieplease.db.DieDatabase;
 import it.fmistri.dontdieplease.fragment.home.HomeFragment;
