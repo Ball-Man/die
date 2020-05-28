@@ -16,7 +16,7 @@ public abstract class SummaryViewModel extends ViewModel {
      * {@link SummaryFragment} to update the UI.
      * @return An observable list of {@link AverageEntry}s.
      */
-    public abstract LiveData<AverageEntry[]> getSummary();
+    public abstract LiveData<AverageEntry[]> getAverages();
 
     /**
      * Retrieve an observable list of {@link ReportWithEntries}s that will be used by the
