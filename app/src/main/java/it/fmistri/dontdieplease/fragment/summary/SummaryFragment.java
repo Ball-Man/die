@@ -27,18 +27,16 @@ import it.fmistri.dontdieplease.db.ReportWithEntries;
  * which is used to retrieve the necessary information(the average values, packed into a collection
  * of {@link AverageEntry}s and the list of reports, embedded into a
  * collection of {@link it.fmistri.dontdieplease.db.ReportWithEntries}.
+ * Note that in order to pass arbitrary data to a {@link SummaryViewModel} {@link Bundle}s are
+ * used(see {@link SummaryViewModel#setArgs(Bundle)}.
+ * Also note that the ViewModel instance should be set in
+ * {@link SummaryFragment#onCreate(Bundle)} using .
  */
 public abstract class SummaryFragment extends Fragment {
     /**
-     * The ViewModel associated to this specific class of SummaryFragment. When deriving
-     * this Fragment class, override this with your implementation of {@link SummaryViewModel}.
-     */
-    private static Class viewModelClass = SummaryViewModel.class;
-
-    /**
      * Actual instance of the ViewModel. This is populated by
-     * {@link SummaryFragment#onViewCreated(View, Bundle)} by using the class provided in
-     * {@link SummaryFragment#viewModelClass}.
+     * {@link SummaryFragment#onCreate(Bundle)} (View, Bundle)} by using the class provided in
+     * {@link SummaryFragment#getViewModelClass()}.
      */
     private SummaryViewModel viewModel;
 
@@ -53,18 +51,49 @@ public abstract class SummaryFragment extends Fragment {
     private ListView summaryListView;
 
     /**
+     * @return the ViewModel type associated to this fragment. This will be used inside
+     * {@link SummaryFragment#onCreate(Bundle)} to automatically manage the ViewModel.
+     * This will throw an exception at runtime; users should override this to return a concrete
+     * implementation of {@link SummaryViewModel}.
+     */
+    protected Class getViewModelClass() {
+        return SummaryViewModel.class;
+    }
+
+    /**
      * @return The {@link SummaryViewModel} associated to the current instance.
      */
-    private SummaryViewModel getViewModel() {
+    protected SummaryViewModel getViewModel() {
         return viewModel;
+    }
+
+    /**
+     * Fragment onCreate event(call to super).
+     * Initialize the ViewModel
+     * @param savedInstanceState
+     */
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Retrieve ViewModel(this will throw an exception at runtime. Users should override
+        // onCreate and use their
+        viewModel = (SummaryViewModel) new ViewModelProvider(requireActivity())
+                .get(getViewModelClass());
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_summary, container);
+        return inflater.inflate(R.layout.fragment_summary, container, false);
     }
 
+    /**
+     * Fragment onViewCreated event(call to super).
+     * Start observing changes from the ViewModel.
+     * @param view
+     * @param savedInstanceState
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -73,10 +102,8 @@ public abstract class SummaryFragment extends Fragment {
         averageListView = view.findViewById(R.id.list_average);
         summaryListView = view.findViewById(R.id.list_summary);
 
-        // Retrieve ViewModel
-        viewModel = (SummaryViewModel) new ViewModelProvider(requireActivity()).get(viewModelClass);
-
         // Observe changes from the model
+        SummaryViewModel viewModel = getViewModel();
         viewModel.getAverages().observe(getViewLifecycleOwner(), new Observer<AverageEntry[]>() {
             @Override
             public void onChanged(AverageEntry[] averageEntries) {
@@ -84,12 +111,12 @@ public abstract class SummaryFragment extends Fragment {
             }
         });
 
-        viewModel.getReports().observe(getViewLifecycleOwner(),
-                new Observer<ReportWithEntries[]>() {
-            @Override
-            public void onChanged(ReportWithEntries[] reportWithEntries) {
-                // TODO: Set report adapter
-            }
-        });
+//        viewModel.getReports().observe(getViewLifecycleOwner(),
+//                new Observer<ReportWithEntries[]>() {
+//            @Override
+//            public void onChanged(ReportWithEntries[] reportWithEntries) {
+//                // TODO: Set report adapter
+//            }
+//        });
     }
 }

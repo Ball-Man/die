@@ -1,5 +1,7 @@
 package it.fmistri.dontdieplease.fragment.summary;
 
+import android.os.Bundle;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -26,4 +28,11 @@ public abstract class SummaryViewModel extends ViewModel {
      * @return An observable list of {@link ReportWithEntries}s.
      */
     public abstract  LiveData<ReportWithEntries[]> getReports();
+
+    /**
+     * Set custom arguments for a specific implementation through a {@link Bundle}.
+     * Detailed management is left to the implementation.
+     * @param args The arguments bundle.
+     */
+    public abstract void setArgs(Bundle args);
 }

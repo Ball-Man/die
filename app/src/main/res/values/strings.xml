@@ -15,4 +15,6 @@
     <string name="heart">Heartbeats per minute</string>
     <string name="temperature">Body temperature</string>
     <string name="pressure">Blood pressure</string>
+    <string name="average">Average values:</string>
+    <string name="reports">Reports:</string>
 </resources>

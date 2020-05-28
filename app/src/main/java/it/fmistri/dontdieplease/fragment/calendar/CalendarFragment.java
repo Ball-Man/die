@@ -30,6 +30,7 @@ public class CalendarFragment extends Fragment implements CalendarView.OnDateCha
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // For simplicity, use this as listener
         ((CalendarView) view.findViewById(R.id.calendar))
                 .setOnDateChangeListener(this);
     }
@@ -37,5 +38,11 @@ public class CalendarFragment extends Fragment implements CalendarView.OnDateCha
     @Override
     public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
         Log.d("CALENDAR", year + " " + month + " " + dayOfMonth);
+
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_main, DailySummaryFragment.newInstance(year,
+                        month, dayOfMonth))
+                .addToBackStack(null)
+                .commit();
     }
 }

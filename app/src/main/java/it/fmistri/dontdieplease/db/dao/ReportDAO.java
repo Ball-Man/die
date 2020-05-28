@@ -19,8 +19,8 @@ public abstract class ReportDAO {
     @Query("SELECT AVG(`value`) as `avg_value`, `date`, `category_name` FROM `Report` " +
             "INNER JOIN `Entry` ON `report_id`=`r_id` " +
             "INNER JOIN `Category` ON `category_name`=`name` " +
-            "WHERE `date`=:date GROUP BY `date`, `category_name`")
-    public abstract LiveData<AverageEntry[]> getSummary(Date date);
+            "WHERE `date` BETWEEN :startDate AND :endDate GROUP BY `date`, `category_name`")
+    public abstract LiveData<AverageEntry[]> getAverageDate(Date startDate, Date endDate);
 
     @Transaction
     @Query("SELECT * FROM `Report`")
