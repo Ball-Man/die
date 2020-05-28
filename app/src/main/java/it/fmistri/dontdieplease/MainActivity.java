@@ -44,7 +44,9 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Add the default fragment
-        replaceFragment(HomeFragment.class);
+        if (savedInstanceState == null) {
+            replaceFragment(HomeFragment.class);
+        }
 
         // Add listener for the navigation view(when an item is selected)
         ((NavigationView) findViewById(R.id.navigation_view)).setNavigationItemSelectedListener(
