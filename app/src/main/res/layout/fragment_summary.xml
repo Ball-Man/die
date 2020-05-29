@@ -41,7 +41,11 @@
         android:id="@+id/list_summary"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3" />
+        android:layout_weight="3"
+        android:clipToPadding="false"
+        android:divider="@null"
+        android:dividerHeight="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small" />
 
 </LinearLayout>
 <!-- </ScrollView> -->

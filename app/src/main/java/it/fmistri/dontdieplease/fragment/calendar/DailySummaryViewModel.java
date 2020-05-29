@@ -60,8 +60,14 @@ public class DailySummaryViewModel extends SummaryViewModel {
 
     @Override
     public LiveData<ReportWithEntries[]> getReports() {
-        // TODO: get reports on a given day
-        return null;
+        if (reports == null) {
+            // Submit the selected date to the DAO and retrieve the observable collection
+            Pair<Date, Date> dates = getDayRange();
+            reports = DieDatabase.getInstance(null).reportDAO().getReportsWithEntries(
+                    dates.first, dates.second
+            );
+        }
+        return reports;
     }
 
     @Override

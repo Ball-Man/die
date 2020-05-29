@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import it.fmistri.dontdieplease.R;
 import it.fmistri.dontdieplease.db.AverageEntry;
+import it.fmistri.dontdieplease.db.ReportWithEntries;
+import it.fmistri.dontdieplease.view.AdaptableLinearLayout;
 
 /**
  * Fragment used to show report summaries given a set of fragments.
@@ -107,12 +110,12 @@ public abstract class SummaryFragment extends Fragment {
             }
         });
 
-//        viewModel.getReports().observe(getViewLifecycleOwner(),
-//                new Observer<ReportWithEntries[]>() {
-//            @Override
-//            public void onChanged(ReportWithEntries[] reportWithEntries) {
-//                // TODO: Set report adapter
-//            }
-//        });
+        viewModel.getReports().observe(getViewLifecycleOwner(),
+                new Observer<ReportWithEntries[]>() {
+            @Override
+            public void onChanged(ReportWithEntries[] reportWithEntries) {
+                summaryListView.setAdapter(new ReportAdapter(getContext(), reportWithEntries));
+            }
+        });
     }
 }
