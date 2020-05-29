@@ -16,7 +16,7 @@ import it.fmistri.dontdieplease.db.AverageEntry;
 
 @Dao
 public abstract class ReportDAO {
-    @Query("SELECT AVG(`value`) as `avg_value`, `date`, `category_name` FROM `Report` " +
+    @Query("SELECT AVG(`value`) as `avg_value`, `category_name` FROM `Report` " +
             "INNER JOIN `Entry` ON `report_id`=`r_id` " +
             "INNER JOIN `Category` ON `category_name`=`name` " +
             "WHERE `date` BETWEEN :startDate AND :endDate GROUP BY `date`, `category_name`")

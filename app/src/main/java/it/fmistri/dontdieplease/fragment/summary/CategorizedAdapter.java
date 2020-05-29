@@ -7,22 +7,21 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import java.util.Locale;
 
 import it.fmistri.dontdieplease.R;
-import it.fmistri.dontdieplease.db.AverageEntry;
+import it.fmistri.dontdieplease.db.Categorized;
 
 /**
- * Adapter for average reports(accepts {@link it.fmistri.dontdieplease.db.AverageEntry}
+ * Adapter for categorized entries from reports
+ * (accepts {@link it.fmistri.dontdieplease.db.Categorized}
  * collections).
  */
-public class AverageReportAdapter extends BaseAdapter {
+public class CategorizedAdapter extends BaseAdapter {
     private Context context;
-    private AverageEntry[] entries;
+    private Categorized[] entries;
 
-    public AverageReportAdapter(Context context, AverageEntry[] entries) {
+    public CategorizedAdapter(Context context, Categorized[] entries) {
         this.entries = entries;
         this.context = context;
     }
@@ -54,13 +53,14 @@ public class AverageReportAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         // Inflate the desired resource if needed
         if (convertView == null)
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.spinner_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.spinner_item, parent,
+                    false);
 
-        AverageEntry entry = (AverageEntry) getItem(position);
+        Categorized entry = (Categorized) getItem(position);
         Context context = getContext();
 
         // Retrieve string using some reflection(so that it matches current locale).
-        int stringId = context.getResources().getIdentifier(entry.category_name,
+        int stringId = context.getResources().getIdentifier(entry.getCategoryName(),
                 "string", context.getPackageName());
         String localizedString = context.getResources().getString(stringId);
 
@@ -69,7 +69,7 @@ public class AverageReportAdapter extends BaseAdapter {
 
         // Actually update the view
         ((TextView) convertView.findViewById(R.id.text)).setText(
-                String.format(loc, "%s:\t%f", localizedString, entry.avg_value));
+                String.format(loc, "%s:\t%f", localizedString, entry.getValue()));
 
         return convertView;
     }

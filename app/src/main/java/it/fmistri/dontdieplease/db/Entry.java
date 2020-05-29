@@ -12,7 +12,7 @@ import androidx.room.ForeignKey;
                     childColumns = "category_name")
         }
 )
-public class Entry {
+public class Entry implements Categorized{
     @ColumnInfo
     @NonNull
     public Long report_id = 0L;
@@ -23,4 +23,14 @@ public class Entry {
 
     @ColumnInfo
     public Double value;
+
+    @Override
+    public double getValue() {
+        return value;
+    }
+
+    @Override
+    public String getCategoryName() {
+        return category_name;
+    }
 }

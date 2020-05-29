@@ -10,14 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-
-import java.util.List;
 
 import it.fmistri.dontdieplease.R;
 import it.fmistri.dontdieplease.db.AverageEntry;
-import it.fmistri.dontdieplease.db.ReportWithEntries;
 
 /**
  * Fragment used to show report summaries given a set of fragments.
@@ -107,7 +103,7 @@ public abstract class SummaryFragment extends Fragment {
         viewModel.getAverages().observe(getViewLifecycleOwner(), new Observer<AverageEntry[]>() {
             @Override
             public void onChanged(AverageEntry[] averageEntries) {
-                averageListView.setAdapter(new AverageReportAdapter(getContext(), averageEntries));
+                averageListView.setAdapter(new CategorizedAdapter(getContext(), averageEntries));
             }
         });
 
