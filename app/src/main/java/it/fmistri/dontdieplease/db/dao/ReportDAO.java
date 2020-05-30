@@ -3,6 +3,7 @@ package it.fmistri.dontdieplease.db.dao;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
 
@@ -33,9 +34,9 @@ public abstract class ReportDAO {
 
     @Transaction
     @Query("SELECT * FROM `Report` WHERE `r_id`=:id")
-    public abstract LiveData<ReportWithEntries> getReportWithEntries(Integer id);
+    public abstract LiveData<ReportWithEntries> getReportWithEntries(long id);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract long addReport(Report report);
 
     @Transaction

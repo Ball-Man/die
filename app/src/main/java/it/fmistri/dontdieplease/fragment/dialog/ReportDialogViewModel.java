@@ -16,6 +16,7 @@ import it.fmistri.dontdieplease.db.ReportWithEntries;
 public class ReportDialogViewModel extends ViewModel {
     private LiveData<Category[]> categories;
     private LiveData<ReportWithEntries> report;
+    private long reportId;
 
     /**
      * @return An observable of the accepted categories.
@@ -27,15 +28,15 @@ public class ReportDialogViewModel extends ViewModel {
     }
 
     /**
-     * Select a report (presumably) for editing purposes. The first id used causes the
-     * ViewModel to cache the result, meaning that asking for different ids won't lead to different
-     * reports(but always the to the same).
+     * Select a report (presumably) for editing purposes.
      * @param id The id of the selected report.
      * @return An observable of the report currently selected.
      */
-    LiveData<ReportWithEntries> getReport(Integer id) {
-        if (report == null)
+    LiveData<ReportWithEntries> getReport(long id) {
+        if (report == null || reportId != id) {
             report = DieDatabase.getInstance(null).reportDAO().getReportWithEntries(id);
+            reportId = id;
+        }
         return report;
     }
 

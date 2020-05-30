@@ -15,7 +15,7 @@ import it.fmistri.dontdieplease.db.dao.ReportDAO;
  * Database manager class(implementation of RoomDatabase).
  * It's also a singleton(GoF).
  */
-@Database(entities={Report.class, Entry.class, Category.class}, version=8)
+@Database(entities={Report.class, Entry.class, Category.class}, version=10)
 @TypeConverters({DateConverter.class})
 public abstract class DieDatabase extends RoomDatabase {
     /**

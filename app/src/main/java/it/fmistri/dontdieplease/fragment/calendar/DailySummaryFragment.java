@@ -1,13 +1,10 @@
 package it.fmistri.dontdieplease.fragment.calendar;
 
 import android.os.Bundle;
-import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import it.fmistri.dontdieplease.fragment.summary.SummaryFragment;
-import it.fmistri.dontdieplease.fragment.summary.SummaryViewModel;
 
 /**
  * Implementation of {@link SummaryFragment} used for daily inspection of reports(from calendar).

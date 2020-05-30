@@ -2,6 +2,7 @@ package it.fmistri.dontdieplease.db.dao;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import java.util.List;
@@ -13,6 +14,6 @@ public interface EntryDAO {
     @Query("SELECT * FROM Entry")
     public List<Entry> getEntries();
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void addEntries(Entry... entries);
 }

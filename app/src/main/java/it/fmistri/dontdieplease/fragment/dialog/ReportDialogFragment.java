@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Adapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -24,7 +26,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Vector;
 
 import it.fmistri.dontdieplease.BuildConfig;
@@ -33,6 +37,7 @@ import it.fmistri.dontdieplease.db.Category;
 import it.fmistri.dontdieplease.db.Entry;
 import it.fmistri.dontdieplease.db.Report;
 import it.fmistri.dontdieplease.db.ReportWithEntries;
+import it.fmistri.dontdieplease.fragment.summary.CategorizedAdapter;
 import it.fmistri.dontdieplease.functional.ArrayFunctional;
 
 public class ReportDialogFragment extends DialogFragment {
@@ -48,7 +53,7 @@ public class ReportDialogFragment extends DialogFragment {
 
     // Parameters
     private boolean edit;
-    private int report_id;
+    private long reportId;
 
     private ReportWithEntries report;
 
@@ -66,15 +71,15 @@ public class ReportDialogFragment extends DialogFragment {
      * the ViewModel).
      * @param edit Whether this fragment instance is for the insertion of a new report or is
      *             for editing a previously added report.
-     * @param report_id The report index used for lookup in a ReportWithEntries array(this value
+     * @param reportId The report index used for lookup in a ReportWithEntries array(this value
      *                     isn't used if edit = false).
      * @return A new fragment instance.
      */
-    public static ReportDialogFragment newInstance(boolean edit, int report_id) {
+    public static ReportDialogFragment newInstance(boolean edit, long reportId) {
         // Create a bundle of arguments
         Bundle args = new Bundle();
         args.putBoolean(EDIT_ARG_KEY, edit);
-        args.putInt(REPORT_ARG_KEY, report_id);
+        args.putLong(REPORT_ARG_KEY, reportId);
 
         // Create the fragment and set the arguments
         ReportDialogFragment fragment = new ReportDialogFragment();
@@ -89,7 +94,7 @@ public class ReportDialogFragment extends DialogFragment {
 
         // Retrieve arguments
         edit = getArguments().getBoolean(EDIT_ARG_KEY, false);
-        report_id = getArguments().getInt(REPORT_ARG_KEY, 0);
+        reportId = getArguments().getLong(REPORT_ARG_KEY, 0);
     }
 
     @Nullable
@@ -147,11 +152,11 @@ public class ReportDialogFragment extends DialogFragment {
 
         if (edit)
             // Edit mode
-            viewModel.getReport(report_id).observe(getViewLifecycleOwner(),
+            viewModel.getReport(reportId).observe(getViewLifecycleOwner(),
                     new Observer<ReportWithEntries>() {
                 @Override
                 public void onChanged(ReportWithEntries report) {
-                    // TODO: edit mode, update UI
+                    changedReport(report);
                 }
             });
 
@@ -200,8 +205,12 @@ public class ReportDialogFragment extends DialogFragment {
     private void changedCategories(Category[] categories) {
         // Add the categories to the spinners
         for (int i = 0; i < categorySpinners.length; i++) {
-            categorySpinners[i].setAdapter(new CategoryAdapter(requireContext(), R.layout.spinner_item,
+            categorySpinners[i].setAdapter(new CategoryAdapter(requireContext(),
                     categories));
+
+            // If on edit, changing categories is forbidden (so far)
+            if (edit)
+                categorySpinners[i].setEnabled(false);
 
             // Set default category(if possible, different for each spinner) only if not in edit
             // mode(in which case the values are set according to the edited report values).
@@ -209,6 +218,61 @@ public class ReportDialogFragment extends DialogFragment {
                 categorySpinners[i].setSelection(i);
         }
     }
+
+    /**
+     * Callback for the ReportWithEntries LiveData.
+     * When the selected report changes, the UI is updated(used in edit mode).
+     * WARNING: Complexity O(C * N) where:
+     *      C is the total number of categories in the spinners
+     *      N is the number of entries in the report
+     * @param report Updated report.
+     */
+    private void changedReport(ReportWithEntries report) {
+        if (!edit || report == null)
+            return;
+
+        this.report = report;
+
+        // Populate spinners and texts
+        // For each spinner
+        HashSet<String> used = new HashSet<>();
+        for (int i = 0; i < categorySpinners.length; i++) {
+            if (report.entries.size() < i)
+                break;
+            Entry entry = report.entries.get(i);
+
+            /// ** Populate spinners ** ///
+            CategoryAdapter adapter = (CategoryAdapter) categorySpinners[i].getAdapter();
+            final String categoryName = entry.category_name;
+
+            Pair<Category, Integer> matchingEntry = ArrayFunctional.find(
+                    new Function<Category, Boolean>() {
+                        @Override
+                        public Boolean apply(Category input) {
+                            return input.name.equals(categoryName);
+                        }
+                    }, adapter.getCategories());
+
+            // If a category has a matching entry
+            if (matchingEntry != null && !used.contains(categoryName)) {
+
+                // Set the category
+                Log.d("EDIT", "Updated spinner: " + i + ", with category: " +
+                        categoryName);
+                categorySpinners[i].setSelection(matchingEntry.second);
+                used.add(categoryName);
+            }
+
+            /// ** Populate texts ** ///
+            Locale loc = requireContext().getResources().getConfiguration().locale;
+            categoryEditTexts[i].setText(String.format(loc, "%f", entry.value));
+
+        }
+
+        // Populate notes
+        notesEditText.setText(report.report.note);
+    }
+
 
     /**
      * Submit the collected data({@link ReportDialogFragment#report}) using
@@ -219,13 +283,9 @@ public class ReportDialogFragment extends DialogFragment {
         // Update the contained report and give the data to the ViewModel
         updateInnerReport();
 
-        // If in edit mode, call an update from the ViewModel.
-        // If in insert mode, call an insert.
-        if (edit) {
-            // TODO: Update report
-        }
-        else
-            viewModel.addReport(report);
+        // TODO: Validate data
+
+        viewModel.addReport(report);
 
         dismiss();
     }
@@ -250,14 +310,13 @@ public class ReportDialogFragment extends DialogFragment {
         }
         report.entries = Arrays.asList(entries);
 
+        report.report = report.report == null ? new Report() : report.report;
+
         // Set notes
-        Report report_entity = new Report();
-        report_entity.note = notesEditText.getText().toString();
+        report.report.note = notesEditText.getText().toString();
 
         // Set date to 'now'(only if adding a new report)
         if (!edit)
-            report_entity.date = new Date(System.currentTimeMillis());
-
-        report.report = report_entity;
+            report.report.date = new Date(System.currentTimeMillis());
     }
 }

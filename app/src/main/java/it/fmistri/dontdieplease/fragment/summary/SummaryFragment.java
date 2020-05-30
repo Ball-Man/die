@@ -1,9 +1,11 @@
 package it.fmistri.dontdieplease.fragment.summary;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -16,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 import it.fmistri.dontdieplease.R;
 import it.fmistri.dontdieplease.db.AverageEntry;
 import it.fmistri.dontdieplease.db.ReportWithEntries;
+import it.fmistri.dontdieplease.fragment.dialog.ReportDialogFragment;
 import it.fmistri.dontdieplease.view.AdaptableLinearLayout;
 
 /**
@@ -31,7 +34,7 @@ import it.fmistri.dontdieplease.view.AdaptableLinearLayout;
  * Also note that the ViewModel instance should be set in
  * {@link SummaryFragment#onCreate(Bundle)} using .
  */
-public abstract class SummaryFragment extends Fragment {
+public abstract class SummaryFragment extends Fragment implements AdapterView.OnItemClickListener {
     /**
      * Actual instance of the ViewModel. This is populated by
      * {@link SummaryFragment#onCreate(Bundle)} (View, Bundle)} by using the class provided in
@@ -101,6 +104,8 @@ public abstract class SummaryFragment extends Fragment {
         averageListView = view.findViewById(R.id.list_average);
         summaryListView = view.findViewById(R.id.list_summary);
 
+        summaryListView.setOnItemClickListener(this);
+
         // Observe changes from the model
         SummaryViewModel viewModel = getViewModel();
         viewModel.getAverages().observe(getViewLifecycleOwner(), new Observer<AverageEntry[]>() {
@@ -117,5 +122,14 @@ public abstract class SummaryFragment extends Fragment {
                 summaryListView.setAdapter(new ReportAdapter(getContext(), reportWithEntries));
             }
         });
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        long reportId = ((ReportWithEntries) parent.getAdapter().getItem(position)).report.r_id;
+
+        Log.d("SUMMARY", "item selected: " + position);
+        ReportDialogFragment.newInstance(true, reportId)
+                .show(getChildFragmentManager(), "report_dialog");
     }
 }
