@@ -19,6 +19,7 @@ import it.fmistri.dontdieplease.fragment.calendar.CalendarFragment;
 import it.fmistri.dontdieplease.db.Category;
 import it.fmistri.dontdieplease.db.DieDatabase;
 import it.fmistri.dontdieplease.fragment.home.HomeFragment;
+import it.fmistri.dontdieplease.fragment.notifications.NotificationsFragment;
 
 public class MainActivity extends AppCompatActivity {
     static String FRAGMENT_MAIN_TAG = "fragment_main";
@@ -89,6 +90,10 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.item_calendar:
                 cl = CalendarFragment.class;
+                break;
+
+            case R.id.item_notifications:
+                cl = NotificationsFragment.class;
                 break;
 
             default:

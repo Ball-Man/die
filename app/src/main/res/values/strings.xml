@@ -4,6 +4,7 @@
     <!-- Drawer -->
     <string name="home">Home</string>
     <string name="calendar">Calendar</string>
+    <string name="notifications">Notifications</string>
 
     <!-- Dialog -->
     <string name="note">Notes</string>
@@ -15,6 +16,14 @@
     <string name="heart">Heartbeats per minute</string>
     <string name="temperature">Body temperature</string>
     <string name="pressure">Blood pressure</string>
+
+    <!-- Summary -->
     <string name="average">Average values:</string>
     <string name="reports">Reports:</string>
+
+    <!-- Notifications -->
+    <string name="toggle_notifications">Toggle notifications</string>
+    <string name="selected_time">Selected time</string>
+    <string name="not_selected">Not selected</string>
+    <string name="choose">Choose</string>
 </resources>

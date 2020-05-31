@@ -8,5 +8,9 @@
         <item
             android:id="@+id/item_calendar"
             android:title="@string/calendar" />
+
+        <item
+            android:id="@+id/item_notifications"
+            android:title="@string/notifications" />
     </group>
 </menu>

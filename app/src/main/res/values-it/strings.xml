@@ -1,13 +1,26 @@
 <resources>
     <!-- Drawer -->
     <string name="calendar">Calendario</string>
+    <string name="notifications">Notifiche</string>
 
     <!-- Dialog -->
     <string name="note">Note</string>
+    <string name="done">Conferma</string>
     <string name="dialog_report_title">Inserisci un nuovo report</string>
+    <string name="value">Valore</string>
 
     <!-- Categories -->
     <string name="heart">Battiti cardiaci</string>
     <string name="temperature">Temperatura corporea</string>
     <string name="pressure">Pressione del sangue</string>
+
+    <!-- Summary -->
+    <string name="average">Valori medi:</string>
+    <string name="reports">Report inseriti:</string>
+
+    <!-- Notifications -->
+    <string name="toggle_notifications">Abilita notifiche</string>
+    <string name="selected_time">Orario selezionato</string>
+    <string name="not_selected">Non selezionato</string>
+    <string name="choose">Cambia</string>
 </resources>
