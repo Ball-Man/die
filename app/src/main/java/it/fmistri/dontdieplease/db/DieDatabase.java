@@ -9,13 +9,15 @@ import androidx.room.TypeConverters;
 
 import it.fmistri.dontdieplease.db.dao.CategoryDAO;
 import it.fmistri.dontdieplease.db.dao.EntryDAO;
+import it.fmistri.dontdieplease.db.dao.NotificationsDAO;
 import it.fmistri.dontdieplease.db.dao.ReportDAO;
 
 /**
  * Database manager class(implementation of RoomDatabase).
  * It's also a singleton(GoF).
  */
-@Database(entities={Report.class, Entry.class, Category.class}, version=10)
+@Database(entities={Report.class, Entry.class, Category.class, NotificationsSettings.class},
+        version=12)
 @TypeConverters({DateConverter.class})
 public abstract class DieDatabase extends RoomDatabase {
     /**
@@ -43,4 +45,5 @@ public abstract class DieDatabase extends RoomDatabase {
     public abstract EntryDAO entryDAO();
     public abstract CategoryDAO categoryDAO();
     public abstract ReportDAO reportDAO();
+    public abstract NotificationsDAO notificationsSettingsDAO();
 }
