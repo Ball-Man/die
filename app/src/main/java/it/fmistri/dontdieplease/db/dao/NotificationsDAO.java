@@ -10,7 +10,7 @@ import it.fmistri.dontdieplease.db.NotificationsSettings;
 @Dao
 public interface NotificationsDAO {
     @Query("SELECT * FROM `NotificationsSettings`")
-    public LiveData<NotificationsSettings> getNotificationsSettings();
+    public LiveData<NotificationsSettings[]> getNotificationsSettings();
 
     @Update
     public void updateNotificationsSettings(NotificationsSettings settings);
