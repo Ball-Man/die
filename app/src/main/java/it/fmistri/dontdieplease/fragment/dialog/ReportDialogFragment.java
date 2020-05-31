@@ -280,10 +280,12 @@ public class ReportDialogFragment extends DialogFragment {
      * Callback for the done button click.
      */
     private void done() {
+        // Validate data
+        if (!validateData())
+            return;
+
         // Update the contained report and give the data to the ViewModel
         updateInnerReport();
-
-        // TODO: Validate data
 
         viewModel.addReport(report);
 
@@ -318,5 +320,42 @@ public class ReportDialogFragment extends DialogFragment {
         // Set date to 'now'(only if adding a new report)
         if (!edit)
             report.report.date = new Date(System.currentTimeMillis());
+    }
+
+    /**
+     * Validate user inserted data(in particular, EditTexts. If any error is found, it will be
+     * signaled to the user through the UI.
+     * @return true if all the inserted data is valid. False otherwise.
+     */
+    private boolean validateData() {
+        boolean ret = true;
+
+        // Used for spinners validation
+        HashSet<String> usedCategories = new HashSet<>();
+
+        for (int i = 0; i < categorySpinners.length; i++) {
+            Spinner spinner = categorySpinners[i];
+            String selectedCategoryName = ((Category) spinner.getSelectedItem()).name;
+            EditText editText = categoryEditTexts[i];
+
+            // Two spinners may not have the same selected category
+            if (usedCategories.contains(selectedCategoryName)) {
+                ((TextView) spinner.getSelectedView()).setError(
+                        getResources().getString(R.string.invalid_category));
+                ret = false;
+            }
+            usedCategories.add(selectedCategoryName);
+
+            // All the input values should be parsable as doubles
+            try {
+                Double.parseDouble(editText.getText().toString());
+            }
+            catch (NumberFormatException | NullPointerException e) {
+                editText.setError(getResources().getString(R.string.invalid_double_value));
+                ret = false;
+            }
+        }
+
+        return ret;
     }
 }
