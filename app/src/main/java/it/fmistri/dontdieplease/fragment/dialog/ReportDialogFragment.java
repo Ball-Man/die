@@ -1,6 +1,8 @@
 package it.fmistri.dontdieplease.fragment.dialog;
 
 import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,6 +43,16 @@ import it.fmistri.dontdieplease.fragment.summary.CategorizedAdapter;
 import it.fmistri.dontdieplease.functional.ArrayFunctional;
 
 public class ReportDialogFragment extends DialogFragment {
+
+    /**
+     * Listener interface for dialog completion. When the dialog is dismissed
+     * {@link OnDismissListener#onDismiss(DialogFragment)} is called, populated with the
+     * dismissed fragment instance.
+     */
+    public interface OnDismissListener {
+        public void onDismiss(DialogFragment fragment);
+    }
+
     private static String EDIT_ARG_KEY = "edit";
     private static String REPORT_ARG_KEY = "report_id";
 
@@ -56,6 +68,9 @@ public class ReportDialogFragment extends DialogFragment {
     private long reportId;
 
     private ReportWithEntries report;
+
+    // Used to notify the father context
+    private OnDismissListener listener;
 
     public ReportDialogFragment() {
         // Persist on configuration changes
@@ -194,6 +209,15 @@ public class ReportDialogFragment extends DialogFragment {
             dialog.setDismissMessage(null);
         }
         super.onDestroyView();
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+
+        // Notify the listener
+        if (listener != null)
+            listener.onDismiss(this);
     }
 
     /**
@@ -357,5 +381,14 @@ public class ReportDialogFragment extends DialogFragment {
         }
 
         return ret;
+    }
+
+    /**
+     * Set the listener that will be notified at the occurrence of
+     * {@link ReportDialogFragment#onDismiss(DialogInterface)}.
+     * @param listener The listener instance.
+     */
+    public void setOnDismissListener(OnDismissListener listener) {
+        this.listener = listener;
     }
 }

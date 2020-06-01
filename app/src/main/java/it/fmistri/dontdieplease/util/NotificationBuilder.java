@@ -7,6 +7,7 @@ import android.content.Intent;
 
 import androidx.annotation.NonNull;
 
+import it.fmistri.dontdieplease.InsertReportActivity;
 import it.fmistri.dontdieplease.NotificationPublisher;
 import it.fmistri.dontdieplease.R;
 
@@ -21,10 +22,16 @@ public class NotificationBuilder {
      */
     @NonNull
     public static Notification buildReminderNotification(Context context) {
+        Intent notificationIntent = new Intent(context, InsertReportActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 1,
+                notificationIntent, 0);
+
         return new Notification.Builder(context)
                 .setSmallIcon(R.drawable.ic_favorite_black_24dp)
                 .setContentTitle(context.getResources().getString(R.string.notification_title))
                 .setContentText(context.getResources().getString(R.string.notification_content))
+                .setContentIntent(contentIntent)
+                .setAutoCancel(true)
                 .build();
     }
 

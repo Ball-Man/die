@@ -16,6 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".InsertReportActivity" android:excludeFromRecents="true"
+            android:theme="@style/TransparentTheme"/>
         <receiver android:name=".NotificationPublisher" />
     </application>
 
