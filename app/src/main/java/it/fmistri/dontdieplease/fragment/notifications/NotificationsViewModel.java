@@ -52,8 +52,8 @@ public class NotificationsViewModel extends ViewModel {
 
         // Build notification pending intent
         AlarmManager alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        PendingIntent alarmIntent = NotificationBuilder.buildPendingIntent(
-                NotificationBuilder.buildNotification(context),
+        PendingIntent alarmIntent = NotificationBuilder.buildReminderPendingIntent(
+                NotificationBuilder.buildReminderNotification(context),
                 context);
 
         // If notifications are enabled, register a daily alarm

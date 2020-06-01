@@ -17,6 +17,10 @@ public class NotificationPublisher extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d("NOT PUBLISHER", "Received intent");
+
+        // Check if a report has already been added today(in which case, ignore the intent)
+
+
         NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         Notification notification = intent.getParcelableExtra(NOTIFICATION);

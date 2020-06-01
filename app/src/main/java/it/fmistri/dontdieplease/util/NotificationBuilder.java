@@ -20,7 +20,7 @@ public class NotificationBuilder {
      * @return A new notification instance.
      */
     @NonNull
-    public static Notification buildNotification(Context context) {
+    public static Notification buildReminderNotification(Context context) {
         return new Notification.Builder(context)
                 .setSmallIcon(R.drawable.ic_favorite_black_24dp)
                 .setContentTitle(context.getResources().getString(R.string.notification_title))
@@ -35,7 +35,7 @@ public class NotificationBuilder {
      * @param context The context (Used to build the {@link Intent}.
      * @return A new pending intent.
      */
-    public static PendingIntent buildPendingIntent(Notification notification, Context context) {
+    public static PendingIntent buildReminderPendingIntent(Notification notification, Context context) {
         Intent intent = new Intent(context, NotificationPublisher.class);
         intent.putExtra(NotificationPublisher.NOTIFICATION, notification);
         intent.putExtra(NotificationPublisher.NOTIFICATION_ID, 0);
