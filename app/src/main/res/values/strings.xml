@@ -28,4 +28,6 @@
     <string name="selected_time">Selected time</string>
     <string name="not_selected">Not selected</string>
     <string name="choose">Choose</string>
+    <string name="notification_title">Update your reports</string>
+    <string name="notification_content">Update your health reports, if you don\'t want to die.</string>
 </resources>

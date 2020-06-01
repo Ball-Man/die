@@ -104,7 +104,7 @@ public class NotificationsFragment extends Fragment implements Observer<Notifica
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         settings.enabled = isChecked;
-        viewModel.updateNotificationsSettings(settings);
+        viewModel.updateNotificationsSettings(settings, requireContext());
     }
 
     /**
@@ -132,6 +132,6 @@ public class NotificationsFragment extends Fragment implements Observer<Notifica
         settings.hour = hourOfDay;
         settings.minute = minute;
 
-        viewModel.updateNotificationsSettings(settings);
+        viewModel.updateNotificationsSettings(settings, requireContext());
     }
 }
