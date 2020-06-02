@@ -104,6 +104,7 @@ public class NotificationsFragment extends Fragment implements Observer<Notifica
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         settings.enabled = isChecked;
+        viewModel.setEnabling(isChecked);
         viewModel.updateNotificationsSettings(settings, requireContext());
     }
 

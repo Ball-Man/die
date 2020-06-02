@@ -23,6 +23,16 @@ import it.fmistri.dontdieplease.util.DateUtil;
 public class NotificationPublisher extends BroadcastReceiver {
     public static String NOTIFICATION = "notification_instance";
     public static String NOTIFICATION_ID = "notification_id";
+    public static String NOTIFICATION_TYPE = "notification_type";
+
+    /**
+     * Notification types used by the publisher to determine what to do(reminder notifications
+     * will be skipped if at least one report has already been inserted).
+     */
+    public enum NotificationType {
+        REMINDER,
+        WARNING
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
