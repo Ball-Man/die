@@ -24,7 +24,6 @@ import it.fmistri.dontdieplease.util.NotificationBuilder;
  */
 public class NotificationsViewModel extends ViewModel {
     private LiveData<NotificationsSettings[]> notificationSettings;
-    private boolean enabling = false;
 
     /**
      * @return An observable containing the array of notifications settings.
@@ -58,7 +57,7 @@ public class NotificationsViewModel extends ViewModel {
                 context);
 
         // If notifications are enabled, register a daily alarm
-        if (settings.enabled && enabling) {
+        if (settings.enabled) {
             // Get time
             GregorianCalendar calendar = new GregorianCalendar();
             calendar.set(Calendar.HOUR_OF_DAY, (int) settings.hour);
@@ -69,18 +68,7 @@ public class NotificationsViewModel extends ViewModel {
                     AlarmManager.INTERVAL_DAY, alarmIntent);
 
         }
-        else    // If notifications are disabled, disable intent
+        else  // If notifications are disabled, disable intent
             alarmMgr.cancel(alarmIntent);
-
-        // Reset temporary toggled value
-        enabling = false;
-    }
-
-    /**
-     * When the notification toggle changes state, this method is called.
-     * @param value The value of the toggled switch.
-     */
-    public void setEnabling(boolean value) {
-        enabling = value;
     }
 }

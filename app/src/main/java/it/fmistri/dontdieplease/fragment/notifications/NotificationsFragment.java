@@ -37,12 +37,13 @@ public class NotificationsFragment extends Fragment implements Observer<Notifica
     private NotificationsViewModel viewModel;
 
     // Views
-    Switch notificationsSwitch;
-    MaterialButton chooseTimeButton;
-    TextView timeTextView;
+    private Switch notificationsSwitch;
+    private MaterialButton chooseTimeButton;
+    private TextView timeTextView;
 
     // Temporary data
     private NotificationsSettings settings;
+    private boolean forced_update = false;
 
     @Nullable
     @Override
@@ -76,6 +77,10 @@ public class NotificationsFragment extends Fragment implements Observer<Notifica
      */
     @Override
     public void onChanged(NotificationsSettings[] notificationsSettings) {
+        // Set to true to signal other components that these state changes aren't input from the
+        // user, but from the ViewModel.
+        forced_update = true;
+
         if (notificationsSettings.length > 0)
             settings = notificationsSettings[0];
         else
@@ -94,6 +99,9 @@ public class NotificationsFragment extends Fragment implements Observer<Notifica
 
         DateFormat format = DateFormat.getTimeInstance(DateFormat.SHORT, loc);
         timeTextView.setText(format.format(time));
+
+        // Reset force updated for further use
+        forced_update = false;
     }
 
     /**
@@ -104,8 +112,9 @@ public class NotificationsFragment extends Fragment implements Observer<Notifica
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         settings.enabled = isChecked;
-        viewModel.setEnabling(isChecked);
-        viewModel.updateNotificationsSettings(settings, requireContext());
+
+        if (!forced_update)
+            viewModel.updateNotificationsSettings(settings, requireContext());
     }
 
     /**
