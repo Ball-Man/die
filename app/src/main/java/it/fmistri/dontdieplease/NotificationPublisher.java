@@ -1,7 +1,6 @@
 package it.fmistri.dontdieplease;
 
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +8,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.util.Pair;
 
-import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import java.util.Calendar;
@@ -19,14 +17,14 @@ import java.util.GregorianCalendar;
 import it.fmistri.dontdieplease.db.DieDatabase;
 import it.fmistri.dontdieplease.db.Report;
 import it.fmistri.dontdieplease.util.DateUtil;
-import it.fmistri.dontdieplease.util.NotificationBuilder;
 
 /**
  * Receive intents and publish a notification based on its content.
  */
 public class NotificationPublisher extends BroadcastReceiver {
-    public static String NOTIFICATION = "notification_instance";
-    public static String NOTIFICATION_ID = "notification_id";
+    public static String NOTIFICATION_KEY = "notification_instance";
+    public static String REMINDER_NOTIFICATION_ID_KEY = "notification_id";
+    public static int REMINDER_NOTIFICATION_ID = 0;
     public static String NOTIFICATION_TYPE = "notification_type";
 
     /**
@@ -63,8 +61,8 @@ public class NotificationPublisher extends BroadcastReceiver {
                             .from(context);
 
                     // Publish notification
-                    Notification notification = int_.getParcelableExtra(NOTIFICATION);
-                    int id = int_.getIntExtra(NOTIFICATION_ID, 0);
+                    Notification notification = int_.getParcelableExtra(NOTIFICATION_KEY);
+                    int id = int_.getIntExtra(REMINDER_NOTIFICATION_ID_KEY, 0);
                     notificationManager.notify(id, notification);
                 }
             }

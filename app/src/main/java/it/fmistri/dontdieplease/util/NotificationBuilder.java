@@ -57,6 +57,8 @@ public class NotificationBuilder {
 
         // Postpone intent
         Intent postponeIntent = new Intent(context, PostponeActivity.class);
+        postponeIntent.putExtra(NotificationPublisher.REMINDER_NOTIFICATION_ID_KEY,
+                NotificationPublisher.REMINDER_NOTIFICATION_ID);
         postponeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent actionIntent = PendingIntent.getActivity(context, REMINDER_POSTPONE,
                 postponeIntent, 0);
@@ -65,6 +67,7 @@ public class NotificationBuilder {
                 R.drawable.ic_favorite_black_24dp,
                 context.getResources().getString(R.string.postpone), actionIntent);
 
+        // Assemble final notification
         return new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL)
                 .setSmallIcon(R.drawable.ic_favorite_black_24dp)
                 .setContentTitle(context.getResources().getString(R.string.notification_title))
@@ -88,8 +91,9 @@ public class NotificationBuilder {
                                                            Context context,
                                                            int reqCode) {
         Intent intent = new Intent(context, NotificationPublisher.class);
-        intent.putExtra(NotificationPublisher.NOTIFICATION, notification);
-        intent.putExtra(NotificationPublisher.NOTIFICATION_ID, 0);
+        intent.putExtra(NotificationPublisher.NOTIFICATION_KEY, notification);
+        intent.putExtra(NotificationPublisher.REMINDER_NOTIFICATION_ID_KEY,
+                NotificationPublisher.REMINDER_NOTIFICATION_ID);
 
         return PendingIntent.getBroadcast(context, reqCode,
                 intent, 0);

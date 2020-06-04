@@ -9,6 +9,7 @@ import android.widget.TimePicker;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.DialogFragment;
 
 import java.util.Calendar;
@@ -26,9 +27,15 @@ import it.fmistri.dontdieplease.util.NotificationBuilder;
 public class PostponeActivity extends AppCompatActivity
         implements TimePickerDialog.OnTimeSetListener,
         NotificationsTimePickerDialogFragment.OnDismissListener {
+    private int notificationId;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Get notification ID from intent(used to cancel it)
+        notificationId = getIntent().getIntExtra(NotificationPublisher.REMINDER_NOTIFICATION_ID_KEY,
+                0);
 
         // Init notification channel
         NotificationBuilder.createChannel(this);
@@ -43,6 +50,9 @@ public class PostponeActivity extends AppCompatActivity
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        // Cancel previous notification
+        NotificationManagerCompat.from(this).cancel(notificationId);
+
         // Create a one shot notification for the postponed time
         PendingIntent intent = NotificationBuilder.buildReminderPendingIntent(
                 NotificationBuilder.buildReminderNotification(this), this,
