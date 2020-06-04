@@ -20,6 +20,7 @@ import it.fmistri.dontdieplease.db.Category;
 import it.fmistri.dontdieplease.db.DieDatabase;
 import it.fmistri.dontdieplease.fragment.home.HomeFragment;
 import it.fmistri.dontdieplease.fragment.notifications.NotificationsFragment;
+import it.fmistri.dontdieplease.util.NotificationBuilder;
 
 public class MainActivity extends AppCompatActivity {
     static String FRAGMENT_MAIN_TAG = "fragment_main";
@@ -32,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Init notification channel
+        NotificationBuilder.createChannel(this);
 
         // Init database
         db = DieDatabase.getInstance(this);

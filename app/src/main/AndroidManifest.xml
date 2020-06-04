@@ -18,6 +18,9 @@
         </activity>
         <activity android:name=".InsertReportActivity" android:excludeFromRecents="true"
             android:theme="@style/TransparentTheme"/>
+        <activity android:name=".PostponeActivity" android:excludeFromRecents="true"
+            android:theme="@style/TransparentTheme"/>
+
         <receiver android:name=".NotificationPublisher" />
     </application>
 

@@ -12,7 +12,7 @@ import it.fmistri.dontdieplease.db.DieDatabase;
 import it.fmistri.dontdieplease.fragment.dialog.ReportDialogFragment;
 
 /**
- * The sole purpose for this activity is instantiate the db and
+ * The sole purpose for this activity is instantiating the db and
  * open a {@link ReportDialogFragment}.
  */
 public class InsertReportActivity extends AppCompatActivity

@@ -30,4 +30,6 @@
     <string name="choose">Choose</string>
     <string name="notification_title">Update your reports</string>
     <string name="notification_content">Update your health reports, if you don\'t want to die.</string>
+    <string name="postpone">Postpone</string>
+    <string name="channel_description">Used for health reminders and warnings</string>
 </resources>

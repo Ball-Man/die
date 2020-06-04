@@ -9,6 +9,9 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.util.Pair;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -16,6 +19,7 @@ import java.util.GregorianCalendar;
 import it.fmistri.dontdieplease.db.DieDatabase;
 import it.fmistri.dontdieplease.db.Report;
 import it.fmistri.dontdieplease.util.DateUtil;
+import it.fmistri.dontdieplease.util.NotificationBuilder;
 
 /**
  * Receive intents and publish a notification based on its content.
@@ -35,7 +39,7 @@ public class NotificationPublisher extends BroadcastReceiver {
     }
 
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(final Context context, Intent intent) {
         Log.d("NOT PUBLISHER", "Received intent");
 
         final Context ctx = context;
@@ -55,8 +59,8 @@ public class NotificationPublisher extends BroadcastReceiver {
 
                 if (reports.length == 0) {
                     // Get notification manager
-                    NotificationManager notificationManager = (NotificationManager) ctx
-                            .getSystemService(Context.NOTIFICATION_SERVICE);
+                    NotificationManagerCompat notificationManager = NotificationManagerCompat
+                            .from(context);
 
                     // Publish notification
                     Notification notification = int_.getParcelableExtra(NOTIFICATION);
@@ -65,6 +69,5 @@ public class NotificationPublisher extends BroadcastReceiver {
                 }
             }
         });
-
     }
 }
