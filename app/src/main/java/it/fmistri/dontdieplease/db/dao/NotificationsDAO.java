@@ -12,6 +12,9 @@ public interface NotificationsDAO {
     @Query("SELECT * FROM `NotificationsSettings`")
     public LiveData<NotificationsSettings[]> getNotificationsSettings();
 
+    @Query("SELECT * FROM `NotificationsSettings`")
+    public NotificationsSettings[] getNotificationsSettingsSync();
+
     @Update
     public void updateNotificationsSettings(NotificationsSettings settings);
 }

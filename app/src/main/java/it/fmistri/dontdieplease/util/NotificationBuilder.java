@@ -4,12 +4,15 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
+import it.fmistri.dontdieplease.BootListener;
 import it.fmistri.dontdieplease.InsertReportActivity;
 import it.fmistri.dontdieplease.NotificationPublisher;
 import it.fmistri.dontdieplease.PostponeActivity;
@@ -111,5 +114,33 @@ public class NotificationBuilder {
     public static PendingIntent buildReminderPendingIntent(Notification notification,
                                                            Context context) {
         return NotificationBuilder.buildReminderPendingIntent(notification, context, REMINDER);
+    }
+
+    /**
+     * Enable {@link BootListener} at startup (will re-set alarms for notifications).
+     * @param context The current context.
+     */
+    public static void enableBootListener(Context context) {
+        ComponentName receiver = new ComponentName(context, BootListener.class);
+        PackageManager pm = context.getPackageManager();
+
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
+    }
+
+    /**
+     * Disable {@link BootListener} at startup
+     * (see {@link NotificationBuilder#enableBootListener(Context)}).
+     * @param context The current context.
+     */
+    public static  void disableBootListener(Context context) {
+        ComponentName receiver = new ComponentName(context, BootListener.class);
+        PackageManager pm = context.getPackageManager();
+
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                PackageManager.DONT_KILL_APP);
+
     }
 }

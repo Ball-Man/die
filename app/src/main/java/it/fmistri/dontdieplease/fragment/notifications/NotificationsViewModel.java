@@ -67,8 +67,12 @@ public class NotificationsViewModel extends ViewModel {
             alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                     AlarmManager.INTERVAL_DAY, alarmIntent);
 
+            NotificationBuilder.enableBootListener(context);
         }
-        else  // If notifications are disabled, disable intent
+        else {  // If notifications are disabled, disable intent
             alarmMgr.cancel(alarmIntent);
+
+            NotificationBuilder.disableBootListener(context);
+        }
     }
 }
