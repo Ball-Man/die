@@ -32,4 +32,8 @@
     <string name="notification_content">Update your health reports, if you don\'t want to die.</string>
     <string name="postpone">Postpone</string>
     <string name="channel_description">Used for health reminders and warnings</string>
+    <string name="monitors">Monitors</string>
+    <string name="start_date">From:</string>
+    <string name="to">To:</string>
+    <string name="threshold">Threshold</string>
 </resources>

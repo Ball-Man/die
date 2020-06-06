@@ -27,6 +27,7 @@ import java.util.Locale;
 
 import it.fmistri.dontdieplease.R;
 import it.fmistri.dontdieplease.db.NotificationsSettings;
+import it.fmistri.dontdieplease.view.AdaptableLinearLayout;
 
 /**
  * Fragment for the notifications settings layout.
@@ -40,6 +41,7 @@ public class NotificationsFragment extends Fragment implements Observer<Notifica
     private Switch notificationsSwitch;
     private MaterialButton chooseTimeButton;
     private TextView timeTextView;
+    private AdaptableLinearLayout monitorLinearLayout;
 
     // Temporary data
     private NotificationsSettings settings;
@@ -59,6 +61,7 @@ public class NotificationsFragment extends Fragment implements Observer<Notifica
         notificationsSwitch = view.findViewById(R.id.toggle_notifications);
         chooseTimeButton = view.findViewById(R.id.time_button);
         timeTextView = view.findViewById(R.id.selected_time);
+        monitorLinearLayout = view.findViewById(R.id.monitor_list);
 
         notificationsSwitch.setOnCheckedChangeListener(this);
         chooseTimeButton.setOnClickListener(this);

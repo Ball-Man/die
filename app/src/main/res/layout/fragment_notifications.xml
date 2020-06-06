@@ -49,4 +49,16 @@
         android:layout_height="wrap_content"
         android:text="@string/choose" />
 
+    <TextView
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/time_button"
+        android:text="@string/monitors" />
+
+    <it.fmistri.dontdieplease.view.AdaptableLinearLayout
+        android:id="@+id/monitor_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </RelativeLayout>
