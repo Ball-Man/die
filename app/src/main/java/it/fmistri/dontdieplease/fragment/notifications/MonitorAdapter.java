@@ -28,7 +28,6 @@ import it.fmistri.dontdieplease.functional.ArrayFunctional;
  */
 public class MonitorAdapter extends BaseAdapter {
     private Monitor[] monitors;
-    private Category[] categories;
     private Context context;
 
     /**
@@ -36,10 +35,9 @@ public class MonitorAdapter extends BaseAdapter {
      * @param context The current context.
      * @param monitors The monitors to adapt.
      */
-    public MonitorAdapter(Context context, Monitor[] monitors, Category[] categories) {
+    public MonitorAdapter(Context context, Monitor[] monitors) {
         this.context = context;
         this.monitors = monitors;
-        this.categories = categories;
     }
 
     @Override
@@ -79,22 +77,7 @@ public class MonitorAdapter extends BaseAdapter {
         // Get current locale
         Locale loc = context.getResources().getConfiguration().locale;
 
-        // Populate categories
-        Spinner categorySpinner = (Spinner) convertView.findViewById(R.id.category_spinner);
-        CategoryAdapter categoryAdapter = new CategoryAdapter(context, categories);
-        categorySpinner.setAdapter(categoryAdapter);
-
-        // Check if the given categories contain the one wanted by this monitor
-        Pair<Category, Integer> result = ArrayFunctional.find(new Function<Category, Boolean>() {
-            @Override
-            public Boolean apply(Category input) {
-                return input.name.equals(monitor.category_name);
-            }
-        }, categories);
-
-        // ... if the category is found, set the spinner on it
-        if (result != null)
-            categorySpinner.setSelection(result.second);
+        // TODO: Move here the MonitorItem instantiation
 
         // Populate dates
         DateFormat format = DateFormat.getDateInstance(DateFormat.SHORT, loc);

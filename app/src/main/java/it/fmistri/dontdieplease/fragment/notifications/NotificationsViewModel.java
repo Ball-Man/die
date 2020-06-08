@@ -13,8 +13,7 @@ import androidx.lifecycle.ViewModel;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import it.fmistri.dontdieplease.NotificationPublisher;
-import it.fmistri.dontdieplease.R;
+import it.fmistri.dontdieplease.db.Category;
 import it.fmistri.dontdieplease.db.DieDatabase;
 import it.fmistri.dontdieplease.db.Monitor;
 import it.fmistri.dontdieplease.db.NotificationsSettings;
@@ -26,6 +25,7 @@ import it.fmistri.dontdieplease.util.NotificationBuilder;
 public class NotificationsViewModel extends ViewModel {
     private LiveData<NotificationsSettings[]> notificationSettings;
     private LiveData<Monitor[]> monitors;
+    private LiveData<Category[]> categories;
 
     /**
      * @return An observable containing the array of notifications settings.
@@ -36,6 +36,16 @@ public class NotificationsViewModel extends ViewModel {
                     .getNotificationsSettings();
 
         return notificationSettings;
+    }
+
+    /**
+     * @return An observable collection of categories.
+     */
+    public LiveData<Category[]> getCategories() {
+        if (categories == null)
+            categories = DieDatabase.getInstance(null).categoryDAO().getCategories();
+
+        return categories;
     }
 
     /**

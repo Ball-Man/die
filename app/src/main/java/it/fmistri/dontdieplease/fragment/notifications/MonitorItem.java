@@ -4,13 +4,18 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.arch.core.util.Function;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.google.android.material.button.MaterialButton;
@@ -19,7 +24,10 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import it.fmistri.dontdieplease.R;
+import it.fmistri.dontdieplease.db.Category;
 import it.fmistri.dontdieplease.db.Monitor;
+import it.fmistri.dontdieplease.fragment.dialog.CategoryAdapter;
+import it.fmistri.dontdieplease.functional.ArrayFunctional;
 
 /**
  * Controller class used as listener for monitor views events.
@@ -27,7 +35,7 @@ import it.fmistri.dontdieplease.db.Monitor;
  * each element in the {@link Monitor} list. A {@link androidx.fragment.app.ListFragment} might
  * be a better solution applied in the future.
  */
-public class MonitorItem implements View.OnClickListener {
+public class MonitorItem implements View.OnClickListener, Observer<Category[]> {
     private Context context;
 
     // Useful views
@@ -35,24 +43,27 @@ public class MonitorItem implements View.OnClickListener {
     private MaterialButton startTimeButton;
     private MaterialButton endTimeButton;
     private EditText thresholdEdit;
+    private Spinner categorySpinner;
 
     // ViewModel
     private NotificationsViewModel viewModel;
 
-    public MonitorItem(Context context, final Monitor monitor, View view,
+    public MonitorItem(Fragment fragment, final Monitor monitor, View view,
                        final NotificationsViewModel viewModel) {
-        this.context = context;
+        this.context = fragment.requireContext();
         this.viewModel = viewModel;
         this.monitor = monitor;
 
         // Useful views
-        final MaterialButton deleteButton = (MaterialButton) view.findViewById(R.id.delete_button);
+        MaterialButton deleteButton = (MaterialButton) view.findViewById(R.id.delete_button);
+        MaterialButton saveButton = (MaterialButton) view.findViewById(R.id.save_button);
         this.startTimeButton = (MaterialButton) view
                 .findViewById(R.id.start_time_button);
         this.endTimeButton = (MaterialButton) view
                 .findViewById(R.id.end_time_button);
+        this.categorySpinner = (Spinner) view.findViewById(R.id.category_spinner);
         this.thresholdEdit = (EditText) view.findViewById(R.id.threshold_edit);
-        final MaterialButton saveButton = (MaterialButton) view.findViewById(R.id.save_button);
+
 
         // Change monitor date range
         startTimeButton.setOnClickListener(this);
@@ -73,6 +84,9 @@ public class MonitorItem implements View.OnClickListener {
                 saveItem();
             }
         });
+
+        // Observe categories
+        viewModel.getCategories().observe(fragment.getViewLifecycleOwner(), this);
     }
 
     /**
@@ -133,7 +147,31 @@ public class MonitorItem implements View.OnClickListener {
     private void saveItem() {
         // TODO: Validate data
         monitor.threshold = Double.parseDouble(thresholdEdit.getText().toString());
+        if (categorySpinner.getSelectedItem() != null)
+            monitor.category_name = ((Category) categorySpinner.getSelectedItem()).name;
         viewModel.addMonitor(monitor);
     }
 
+    /**
+     * Update spinner with the given categories.
+     * @param categories The updated categories.
+     */
+    @Override
+    public void onChanged(Category[] categories) {
+        // Create and set adapter
+        CategoryAdapter categoryAdapter = new CategoryAdapter(context, categories);
+        categorySpinner.setAdapter(categoryAdapter);
+
+        // Check if the given categories contain the one wanted by this monitor
+        Pair<Category, Integer> result = ArrayFunctional.find(new Function<Category, Boolean>() {
+            @Override
+            public Boolean apply(Category input) {
+                return input.name.equals(monitor.category_name);
+            }
+        }, categories);
+
+        // ... if the category is found, set the spinner on it
+        if (result != null)
+            categorySpinner.setSelection(result.second);
+    }
 }

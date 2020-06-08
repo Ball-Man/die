@@ -180,13 +180,13 @@ public class NotificationsFragment extends Fragment implements Observer<Notifica
      * @param monitors The list of updated monitors.
      */
     private void changedMonitors(Monitor[] monitors) {
-        MonitorAdapter adapter = new MonitorAdapter(requireContext(), monitors, new Category[0]);
+        MonitorAdapter adapter = new MonitorAdapter(requireContext(), monitors);
         monitorLinearLayout.populateWithAdapter(adapter);
 
         // Populate monitor views events
         // TODO: Find a scalable solution (Fragments/ListFragment?).
         for (int i = 0; i < monitors.length; i++) {
-            new MonitorItem(requireContext(), monitors[i], monitorLinearLayout.getChildAt(i),
+            new MonitorItem(this, monitors[i], monitorLinearLayout.getChildAt(i),
                     viewModel);
         }
     }
