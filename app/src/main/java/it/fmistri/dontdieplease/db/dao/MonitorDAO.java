@@ -22,16 +22,15 @@ public interface MonitorDAO {
     @Delete
     public void removeMonitor(Monitor monitor);
 
-    @Query("SELECT `Monitor`.*, `Category`.* " +
+    @Query("SELECT `Monitor`.* " +
             "FROM `Monitor` INNER JOIN " +
             "`Category` ON `Monitor`.`category_name`=`name` INNER JOIN " +
             "`Entry` ON `Entry`.`category_name`=`name` INNER JOIN " +
             "`Report` ON `r_id`=`report_id` " +
-            "WHERE `end_date` < :valid_date AND `date` BETWEEN `start_date` AND `end_date` " +
-            "AND `Monitor`.`category_name` IN (:check_categories) " +
+            "WHERE `end_date` > :valid_date AND `date` BETWEEN `start_date` AND `end_date` " +
+            "AND `importance` >= :minImportance " +
             "GROUP BY `Monitor`.`m_id`, `Monitor`.`start_date`, `Monitor`.`end_date`, " +
-            "`Monitor`.`threshold`, `Monitor`.`category_name`, `Category`.`name`, " +
-            "`Category`.`importance` " +
-            "HAVING AVG(`Entry`.value) > `threshold`")
-    public LiveData<Monitor[]> getTriggeredMonitors(Date valid_date, String[] check_categories);
+            "`Monitor`.`threshold`, `Monitor`.`category_name` " +
+            "HAVING AVG(`Entry`.`value`) > `threshold`")
+    public Monitor[] getTriggeredMonitorsSync(Date valid_date, int minImportance);
 }

@@ -69,11 +69,6 @@ public class MonitorAdapter extends BaseAdapter {
         final Monitor monitor = (Monitor) getItem(position);
         Context context = getContext();
 
-        // Retrieve string using some reflection(so that it matches current locale).
-        int stringId = context.getResources().getIdentifier(monitor.category_name,
-                "string", context.getPackageName());
-        String localizedString = context.getResources().getString(stringId);
-
         // Get current locale
         Locale loc = context.getResources().getConfiguration().locale;
 

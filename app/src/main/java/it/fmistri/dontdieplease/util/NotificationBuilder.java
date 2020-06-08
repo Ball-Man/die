@@ -12,11 +12,14 @@ import android.content.pm.PackageManager;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
+import java.util.Locale;
+
 import it.fmistri.dontdieplease.BootListener;
 import it.fmistri.dontdieplease.InsertReportActivity;
 import it.fmistri.dontdieplease.NotificationPublisher;
 import it.fmistri.dontdieplease.PostponeActivity;
 import it.fmistri.dontdieplease.R;
+import it.fmistri.dontdieplease.db.Monitor;
 
 /**
  * Contains util methods to create notifications and associated intents for the app.
@@ -114,6 +117,36 @@ public class NotificationBuilder {
     public static PendingIntent buildReminderPendingIntent(Notification notification,
                                                            Context context) {
         return NotificationBuilder.buildReminderPendingIntent(notification, context, REMINDER);
+    }
+
+    /**
+     * Build a warning notification, based on the data stored in a monitor. The notification will
+     * tell the user that a specific info about their health exceeded the chosen threshold.
+     * @param context The context used to build the notification.
+     * @param monitor The monitor that exceeded the threshold.
+     * @return A new notification instance.
+     */
+    public static Notification buildWarningNotification(Context context, Monitor monitor) {
+        // Retrieve category string using some reflection(so that it matches current locale).
+        int stringId = context.getResources().getIdentifier(monitor.category_name,
+                "string", context.getPackageName());
+        String categoryString = context.getResources().getString(stringId);
+        String warningString = context.getResources().getString(R.string.warning_content);
+
+
+
+        // Get current locale
+        Locale loc = context.getResources().getConfiguration().locale;
+
+        // Assemble final notification
+        return new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL)
+                .setSmallIcon(R.drawable.ic_warning_black_24dp)
+                .setContentTitle(context.getResources().getString(R.string.warning_title))
+                .setContentText(String.format(loc, warningString, categoryString,
+                        monitor.threshold))
+                .setPriority(Notification.PRIORITY_DEFAULT)
+                .setAutoCancel(true)
+                .build();
     }
 
     /**

@@ -38,4 +38,6 @@
     <string name="threshold">Threshold</string>
     <string name="save">Save</string>
     <string name="remove">Remove</string>
+    <string name="warning_title">Health warning</string>
+    <string name="warning_content">Your %s exceeded the value of %.2f</string>
 </resources>
