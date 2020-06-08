@@ -25,4 +25,16 @@
     <string name="selected_time">Orario selezionato</string>
     <string name="not_selected">Non selezionato</string>
     <string name="choose">Cambia</string>
+    <string name="notification_title">Aggiorna i tuoi report</string>
+    <string name="notification_content">Aggiungi i report per la tua salute</string>
+    <string name="postpone">Rimanda</string>
+    <string name="channel_description">Usato per il monitoraggio della salute</string>
+    <string name="monitors">Monitor</string>
+    <string name="start_date">Da:</string>
+    <string name="to">A:</string>
+    <string name="threshold">Soglia</string>
+    <string name="save">Salva</string>
+    <string name="remove">Rimuovi</string>
+    <string name="warning_title">Attenzione alla tua salute</string>
+    <string name="warning_content">Il tuo %s ha superato la soglia di %.2f</string>
 </resources>
