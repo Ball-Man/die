@@ -1,99 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="wrap_content"
+    android:padding="@dimen/padding_extrasmall"
+    android:layout_marginTop="@dimen/margin_small" >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/delete_button"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="@string/remove"
-        android:layout_marginEnd="@dimen/margin_small" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/delete_button"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/remove"
+            android:layout_marginEnd="@dimen/margin_small" />
 
-    <Spinner
-        android:layout_toEndOf="@id/delete_button"
-        android:id="@+id/category_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_small"/>
+        <Spinner
+            android:layout_toEndOf="@id/delete_button"
+            android:id="@+id/category_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_small"/>
 
-    <TextView
-        android:id="@+id/from_view"
-        android:layout_toEndOf="@+id/category_spinner"
-        android:text="@string/start_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_small" />
+        <TextView
+            android:id="@+id/from_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/category_spinner"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_toEndOf="@+id/delete_button"
+            android:text="@string/start_date" />
 
-    <TextView
-        android:id="@+id/start_date_view"
-        android:layout_toEndOf="@+id/from_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/not_selected"
-        android:layout_marginEnd="@dimen/margin_small" />
+        <TextView
+            android:id="@+id/start_date_view"
+            android:layout_alignBottom="@id/from_view"
+            android:layout_toEndOf="@id/from_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/not_selected"
+            android:layout_marginEnd="@dimen/margin_small" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/start_time_button"
-        android:layout_below="@id/start_date_view"
-        android:layout_alignStart="@id/start_date_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/choose"
-        android:layout_marginEnd="@dimen/margin_small" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/start_time_button"
+            android:layout_below="@id/start_date_view"
+            android:layout_alignStart="@id/start_date_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/choose"
+            android:layout_marginEnd="@dimen/margin_small" />
 
-    <TextView
-        android:id="@+id/to_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/start_time_button"
-        android:layout_alignStart="@id/from_view"
-        android:layout_alignEnd="@id/from_view"
-        android:text="@string/to" />
+        <TextView
+            android:id="@+id/to_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/start_time_button"
+            android:layout_alignStart="@id/from_view"
+            android:layout_alignEnd="@id/from_view"
+            android:text="@string/to" />
 
-    <TextView
-        android:id="@+id/end_date_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/start_time_button"
-        android:layout_alignStart="@+id/start_time_button"
-        android:layout_marginEnd="@dimen/margin_small"
-        android:text="@string/not_selected" />
+        <TextView
+            android:id="@+id/end_date_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/start_time_button"
+            android:layout_alignStart="@+id/start_time_button"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:text="@string/not_selected" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/end_time_button"
-        android:layout_below="@id/end_date_view"
-        android:layout_alignStart="@id/end_date_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/choose"
-        android:layout_marginEnd="@dimen/margin_small" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/end_time_button"
+            android:layout_below="@id/end_date_view"
+            android:layout_alignStart="@id/end_date_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/choose"
+            android:layout_marginEnd="@dimen/margin_small" />
 
-    <TextView
-        android:id="@+id/threshold_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/threshold"
-        android:layout_alignStart="@id/category_spinner"
-        android:layout_alignBottom="@id/threshold_edit"
-        android:layout_marginEnd="@dimen/margin_small"
-        android:labelFor="@id/threshold_edit" />
+        <TextView
+            android:id="@+id/threshold_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/threshold"
+            android:layout_alignStart="@id/category_spinner"
+            android:layout_alignBottom="@id/threshold_edit"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:labelFor="@id/threshold_edit" />
 
-    <EditText
-        android:id="@+id/threshold_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/value"
-        android:inputType="numberDecimal"
-        android:layout_below="@id/end_time_button"
-        android:layout_toEndOf="@id/threshold_view" />
+        <EditText
+            android:id="@+id/threshold_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/value"
+            android:inputType="numberDecimal"
+            android:layout_below="@id/end_time_button"
+            android:layout_toEndOf="@id/threshold_view" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/save_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/threshold_edit"
-        android:layout_alignParentEnd="true"
-        android:text="@string/save"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/save_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/delete_button"
+            android:layout_below="@id/delete_button"
+            android:text="@string/save"
+            style="@style/Widget.MaterialComponents.Button.TextButton" />
 
-</RelativeLayout>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
