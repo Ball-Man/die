@@ -25,5 +25,5 @@ public class Monitor {
 
     @ColumnInfo
     @NonNull
-    public String category_name;
+    public String category_name = "heart";
 }

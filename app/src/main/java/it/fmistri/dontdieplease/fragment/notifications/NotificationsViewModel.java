@@ -16,6 +16,7 @@ import java.util.GregorianCalendar;
 import it.fmistri.dontdieplease.NotificationPublisher;
 import it.fmistri.dontdieplease.R;
 import it.fmistri.dontdieplease.db.DieDatabase;
+import it.fmistri.dontdieplease.db.Monitor;
 import it.fmistri.dontdieplease.db.NotificationsSettings;
 import it.fmistri.dontdieplease.util.NotificationBuilder;
 
@@ -24,6 +25,7 @@ import it.fmistri.dontdieplease.util.NotificationBuilder;
  */
 public class NotificationsViewModel extends ViewModel {
     private LiveData<NotificationsSettings[]> notificationSettings;
+    private LiveData<Monitor[]> monitors;
 
     /**
      * @return An observable containing the array of notifications settings.
@@ -74,5 +76,42 @@ public class NotificationsViewModel extends ViewModel {
 
             NotificationBuilder.disableBootListener(context);
         }
+    }
+
+    /**
+     * @return An observable collection of {@link Monitor}.
+     */
+    public LiveData<Monitor[]> getMonitors() {
+        if (monitors == null) {
+            monitors = DieDatabase.getInstance(null).monitorDAO().getMonitors();
+        }
+        return monitors;
+    }
+
+    /**
+     * Delete the given monitor.
+     * @param monitor The monitor to delete.
+     */
+    public void deleteMonitor(final Monitor monitor) {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                DieDatabase.getInstance(null).monitorDAO().removeMonitor(monitor);
+            }
+        });
+    }
+
+    /**
+     * Add a monitor(already existing monitors will be overwritten, meaning this method is also
+     * good for updating).
+     * @param monitor The monitor to be added.
+     */
+    public void addMonitor(final Monitor monitor) {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                DieDatabase.getInstance(null).monitorDAO().addMonitors(monitor);
+            }
+        });
     }
 }

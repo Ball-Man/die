@@ -1,64 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
     android:padding="@dimen/padding_small" >
+    <ScrollView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" >
 
-    <LinearLayout
-        android:id="@+id/linear_layout"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <LinearLayout
+                android:id="@+id/linear_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/toggle_notifications"
+                    android:text="@string/toggle_notifications" />
+
+                <Switch
+                    android:id="@+id/toggle_notifications"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_small"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/selected_time_view"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/selected_time"
+                android:layout_below="@id/linear_layout" />
+
+            <TextView
+                android:id="@+id/selected_time"
+                android:layout_marginStart="@dimen/margin_small"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/linear_layout"
+                android:text="@string/not_selected"
+                android:layout_toEndOf="@id/selected_time_view" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/time_button"
+                android:layout_below="@+id/selected_time"
+                android:layout_alignStart="@+id/selected_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/choose" />
+
+            <TextView
+                android:id="@+id/monitors_text"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/time_button"
+                android:text="@string/monitors" />
+
+            <it.fmistri.dontdieplease.view.AdaptableLinearLayout
+                android:id="@+id/monitor_list"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/monitors_text"
+                android:orientation="vertical" >
+            </it.fmistri.dontdieplease.view.AdaptableLinearLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_monitor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:labelFor="@+id/toggle_notifications"
-            android:text="@string/toggle_notifications" />
-
-        <Switch
-            android:id="@+id/toggle_notifications"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_small"/>
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/selected_time_view"
-        android:layout_marginTop="@dimen/margin_small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/selected_time"
-        android:layout_below="@id/linear_layout" />
-
-    <TextView
-        android:id="@+id/selected_time"
-        android:layout_marginStart="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/linear_layout"
-        android:text="@string/not_selected"
-        android:layout_toEndOf="@id/selected_time_view" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/time_button"
-        android:layout_below="@+id/selected_time"
-        android:layout_alignStart="@+id/selected_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/choose" />
-
-    <TextView
-        android:layout_marginTop="@dimen/margin_small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/time_button"
-        android:text="@string/monitors" />
-
-    <it.fmistri.dontdieplease.view.AdaptableLinearLayout
-        android:id="@+id/monitor_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
+        android:src="@drawable/ic_add_black_24dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>

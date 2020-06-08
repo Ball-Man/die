@@ -1,11 +1,14 @@
 package it.fmistri.dontdieplease.fragment.notifications;
 
+import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -17,15 +20,18 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.Vector;
 
 import it.fmistri.dontdieplease.R;
+import it.fmistri.dontdieplease.db.Category;
+import it.fmistri.dontdieplease.db.Monitor;
 import it.fmistri.dontdieplease.db.NotificationsSettings;
 import it.fmistri.dontdieplease.view.AdaptableLinearLayout;
 
@@ -34,7 +40,7 @@ import it.fmistri.dontdieplease.view.AdaptableLinearLayout;
  */
 public class NotificationsFragment extends Fragment implements Observer<NotificationsSettings[]>,
         CompoundButton.OnCheckedChangeListener, View.OnClickListener,
-        TimePickerDialog.OnTimeSetListener{
+        TimePickerDialog.OnTimeSetListener {
     private NotificationsViewModel viewModel;
 
     // Views
@@ -42,6 +48,7 @@ public class NotificationsFragment extends Fragment implements Observer<Notifica
     private MaterialButton chooseTimeButton;
     private TextView timeTextView;
     private AdaptableLinearLayout monitorLinearLayout;
+    private FloatingActionButton addMonitorFAB;
 
     // Temporary data
     private NotificationsSettings settings;
@@ -49,7 +56,8 @@ public class NotificationsFragment extends Fragment implements Observer<Notifica
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_notifications, container, false);
     }
 
@@ -66,11 +74,30 @@ public class NotificationsFragment extends Fragment implements Observer<Notifica
         notificationsSwitch.setOnCheckedChangeListener(this);
         chooseTimeButton.setOnClickListener(this);
 
+        addMonitorFAB = view.findViewById(R.id.add_monitor);
+
+        // Listen and add monitors on FAB touched
+        addMonitorFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addTempMonitor();
+            }
+        });
+
         // Retrieve a ViewModel instance
         viewModel = new ViewModelProvider(requireActivity()).get(NotificationsViewModel.class);
 
         // Observe changes in settings
         viewModel.getNotificationsSettings().observe(getViewLifecycleOwner(), this);
+
+        // Observe changes in monitors
+        viewModel.getMonitors().observe(getViewLifecycleOwner(),
+                new Observer<Monitor[]>() {
+            @Override
+            public void onChanged(Monitor[] monitors) {
+                changedMonitors(monitors);
+            }
+        });
     }
 
     /**
@@ -146,5 +173,38 @@ public class NotificationsFragment extends Fragment implements Observer<Notifica
         settings.minute = minute;
 
         viewModel.updateNotificationsSettings(settings, requireContext());
+    }
+
+    /**
+     * Repopulate the monitor list({@link NotificationsFragment#monitorLinearLayout}).
+     * @param monitors The list of updated monitors.
+     */
+    private void changedMonitors(Monitor[] monitors) {
+        MonitorAdapter adapter = new MonitorAdapter(requireContext(), monitors, new Category[0]);
+        monitorLinearLayout.populateWithAdapter(adapter);
+
+        // Populate monitor views events
+        // TODO: Find a scalable solution (Fragments/ListFragment?).
+        for (int i = 0; i < monitors.length; i++) {
+            new MonitorItem(requireContext(), monitors[i], monitorLinearLayout.getChildAt(i),
+                    viewModel);
+        }
+    }
+
+    /**
+     * Add a default monitor definition to the model. This can be modified by the user or deleted.
+     */
+    private void addTempMonitor() {
+        Monitor monitor = new Monitor();
+
+        // Construct with default values
+        GregorianCalendar calendar = new GregorianCalendar();
+        long today = calendar.getTimeInMillis();
+        calendar.add(Calendar.WEEK_OF_YEAR, 1);
+        monitor.start_date = today;
+        monitor.end_date = calendar.getTimeInMillis();
+        monitor.threshold = 0;
+
+        viewModel.addMonitor(monitor);
     }
 }

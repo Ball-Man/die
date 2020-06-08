@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" >
 
-    <TextView
-        style="@android:style/TextAppearance.Large"
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/delete_button"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="-"
-        android:layout_marginEnd="@dimen/margin_small"
-        android:focusable="true"
-        android:clickable="true" />
+        android:text="@string/remove"
+        android:layout_marginEnd="@dimen/margin_small" />
 
     <Spinner
         android:layout_toEndOf="@id/delete_button"
@@ -90,5 +87,13 @@
         android:inputType="numberDecimal"
         android:layout_below="@id/end_time_button"
         android:layout_toEndOf="@id/threshold_view" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/save_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/threshold_edit"
+        android:layout_alignParentEnd="true"
+        android:text="@string/save"/>
 
 </RelativeLayout>

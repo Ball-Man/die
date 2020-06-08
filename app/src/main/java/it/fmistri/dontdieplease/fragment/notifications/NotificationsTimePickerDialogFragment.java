@@ -5,12 +5,9 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.format.DateFormat;
-import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
-
-import java.util.Calendar;
 
 /**
  * Wrapper around {@link TimePickerDialog} with a bit of custom code for project specific
@@ -92,3 +89,4 @@ public class NotificationsTimePickerDialogFragment extends DialogFragment {
         this.listener = listener;
     }
 }
+
