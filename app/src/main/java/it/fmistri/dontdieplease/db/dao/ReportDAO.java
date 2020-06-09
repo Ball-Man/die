@@ -26,6 +26,15 @@ public abstract class ReportDAO {
             "WHERE `date` BETWEEN :startDate AND :endDate GROUP BY `category_name`")
     public abstract LiveData<AverageEntry[]> getAverageDate(Date startDate, Date endDate);
 
+    @Query("SELECT AVG(`value`) as `avg_value`, `category_name` FROM `Report` " +
+            "INNER JOIN `Entry` ON `report_id`=`r_id` " +
+            "INNER JOIN `Category` ON `category_name`=`name` " +
+            "WHERE `category_name` LIKE :categoryName AND `value` >= :minValue " +
+            "AND `value` <= :maxValue " +
+            "GROUP BY `category_name`")
+    public abstract LiveData<AverageEntry[]> getAverage(String categoryName, double minValue,
+                                                        double maxValue);
+
     @Transaction
     @Query("SELECT * FROM `Report`")
     public abstract LiveData<ReportWithEntries[]> getReportsWithEntries();
@@ -34,6 +43,14 @@ public abstract class ReportDAO {
     @Query("SELECT * FROM `Report` WHERE `date` BETWEEN :startDate AND :endDate")
     public abstract LiveData<ReportWithEntries[]> getReportsWithEntries(Date startDate,
                                                                         Date endDate);
+
+    @Transaction
+    @Query("SELECT `Report`.* FROM `Report` INNER JOIN `Entry` " +
+            "ON `r_id`=`report_id` WHERE " +
+            "`category_name` LIKE :categoryName AND `value` >= :minValue AND `value` <= :maxValue")
+    public abstract LiveData<ReportWithEntries[]> getReportsWithEntries(String categoryName,
+                                                                        double minValue,
+                                                                        double maxValue);
 
     @Transaction
     @Query("SELECT * FROM `Report` WHERE `r_id`=:id")

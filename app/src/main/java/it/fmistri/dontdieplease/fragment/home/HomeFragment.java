@@ -47,12 +47,4 @@ public class HomeFragment extends Fragment {
         ReportDialogFragment.newInstance(false, 0)
                 .show(getChildFragmentManager(), "report_dialog");
     }
-
-    //    /**
-//     * Create a new instance of HomeFragment.
-//     * @return A new fragment.
-//     */
-//    public static HomeFragment newInstance() {
-//        return new HomeFragment();
-//    }
 }
