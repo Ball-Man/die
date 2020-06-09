@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import it.fmistri.dontdieplease.R;
 import it.fmistri.dontdieplease.fragment.dialog.ReportDialogFragment;
 
@@ -29,10 +31,10 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ((Button) view.findViewById(R.id.add_button)).setOnClickListener(new View.OnClickListener() {
+        ((FloatingActionButton) view.findViewById(R.id.add_button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                click();
+                addClick();
             }
         });
     }
@@ -40,7 +42,7 @@ public class HomeFragment extends Fragment {
     /**
      * Callback for the add button click.
      */
-    private void click() {
+    private void addClick() {
         Log.d("HOME", "button pressed");
         ReportDialogFragment.newInstance(false, 0)
                 .show(getChildFragmentManager(), "report_dialog");
