@@ -42,4 +42,5 @@
     <string name="warning_content">Your %s exceeded the value of %.2f</string>
     <string name="contains">Contains</string>
     <string name="search">Search</string>
+    <string name="no_category">No category selected</string>
 </resources>

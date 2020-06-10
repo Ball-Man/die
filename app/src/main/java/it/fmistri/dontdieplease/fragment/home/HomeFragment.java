@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -84,7 +85,9 @@ public class HomeFragment extends Fragment implements Observer<Category[]> {
      * Callback for the search button click.
      */
     private void searchClick() {
-        // TODO: Validate input
+        if (!validateFilter())
+            return;
+
         Fragment fragment = FilterSummaryFragment.newInstance(
                 ((Category) categorySpinner.getSelectedItem()).name,
                 Double.parseDouble(minValueEdit.getText().toString()),
@@ -102,5 +105,32 @@ public class HomeFragment extends Fragment implements Observer<Category[]> {
     @Override
     public void onChanged(Category[] categories) {
         categorySpinner.setAdapter(new CategoryAdapter(requireContext(), categories));
+    }
+
+    /**
+     * Validate data in the filter before querying.
+     * @return true if all the data is valid, false if at least one data is not valid.
+     */
+    private boolean validateFilter() {
+        boolean ret = true;
+
+        // The spinner should contain a valid category
+        if (categorySpinner.getSelectedItem() == null) {
+            Toast.makeText(getContext(), R.string.no_category, Toast.LENGTH_SHORT).show();
+            ret = false;
+        }
+
+        // EditTexts should be valid decimals
+        try {
+            Double.parseDouble(minValueEdit.getText().toString());
+            Double.parseDouble(maxValueEdit.getText().toString());
+        }
+        catch (NullPointerException | NumberFormatException e) {
+            minValueEdit.setError(getResources().getString(R.string.invalid_double_value));
+            maxValueEdit.setError(getResources().getString(R.string.invalid_double_value));
+            ret = false;
+        }
+
+        return ret;
     }
 }
