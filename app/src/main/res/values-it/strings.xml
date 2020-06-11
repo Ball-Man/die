@@ -1,7 +1,13 @@
 <resources>
     <!-- Drawer -->
+    <string name="statistics">Statistiche</string>
     <string name="calendar">Calendario</string>
     <string name="notifications">Notifiche</string>
+
+    <!-- Home -->
+    <string name="contains">Contiene</string>
+    <string name="search">Cerca</string>
+    <string name="no_category">Nessuna categoria selezionata</string>
 
     <!-- Dialog -->
     <string name="note">Note</string>
@@ -37,4 +43,9 @@
     <string name="remove">Rimuovi</string>
     <string name="warning_title">Attenzione alla tua salute</string>
     <string name="warning_content">Il tuo %s ha superato la soglia di %.2f</string>
+
+    <!-- Statistics -->
+    <string name="heart_weekly">Battito cardiaco settimanale</string>
+    <string name="safe">Sotto controllo</string>
+    <string name="warning">Pericolo</string>
 </resources>
