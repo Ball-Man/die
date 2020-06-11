@@ -45,5 +45,6 @@
     <string name="no_category">No category selected</string>
     <string name="statistics">Statistics</string>
     <string name="heart_weekly">This week\'s heartbeat</string>
-    <string name="reports_weekly">Reports inserted this week</string>
+    <string name="safe">Safe</string>
+    <string name="warning">Warning</string>
 </resources>

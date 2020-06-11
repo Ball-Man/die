@@ -29,7 +29,7 @@ public class NotificationPublisher extends BroadcastReceiver {
     public static int REMINDER_NOTIFICATION_ID = 0;
     public static String NOTIFICATION_TYPE = "notification_type";
 
-    public static int MIN_WARNING_IMPORTANCE = 0;
+    public static int MIN_WARNING_IMPORTANCE = 3;
 
     /**
      * Notification types used by the publisher to determine what to do(reminder notifications

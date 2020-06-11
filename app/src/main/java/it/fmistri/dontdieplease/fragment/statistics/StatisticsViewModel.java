@@ -11,7 +11,9 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import it.fmistri.dontdieplease.db.DieDatabase;
+import it.fmistri.dontdieplease.db.Monitor;
 import it.fmistri.dontdieplease.db.Report;
+import it.fmistri.dontdieplease.db.ReportWithEntries;
 import it.fmistri.dontdieplease.db.StatisticEntry;
 import it.fmistri.dontdieplease.util.DateUtil;
 
@@ -21,7 +23,8 @@ import it.fmistri.dontdieplease.util.DateUtil;
 public class StatisticsViewModel extends ViewModel {
     private LiveData<StatisticEntry[]> entries;
     private String category;
-    private LiveData<Report[]> reports;
+    private LiveData<Monitor[]> triggeredMonitors;
+    private LiveData<Monitor[]> allMonitors;
 
     /**
      * Retrieve all the entries from last week that match the given category.
@@ -44,8 +47,26 @@ public class StatisticsViewModel extends ViewModel {
         return entries;
     }
 
-    public LiveData<Report[]> getLastWeeksReportCount() {
-        //if ()
-        return null;
+    /**
+     * @return An observable collection of monitors(all the valid one that exceeded their
+     * threshold).
+     */
+    public LiveData<Monitor[]> getTriggeredMonitors() {
+        if (triggeredMonitors == null)
+            triggeredMonitors = DieDatabase.getInstance(null).monitorDAO().getTriggeredMonitors(
+                    new GregorianCalendar().getTime(), 0);
+
+        return triggeredMonitors;
+    }
+
+    /**
+     * @return An observable collection of all the valid monitors to this day.
+     */
+    public LiveData<Monitor[]> getAllMonitors() {
+        if (allMonitors == null)
+            allMonitors = DieDatabase.getInstance(null).monitorDAO().getMonitors(
+                    new GregorianCalendar().getTime(), 0);
+
+        return allMonitors;
     }
 }

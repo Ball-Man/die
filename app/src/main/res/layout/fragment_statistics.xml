@@ -22,18 +22,24 @@
             />
 
         <TextView
-            android:text="@string/reports_weekly"
+            android:text="@string/monitors"
             style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_small" />
+            android:layout_margin="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_medium"/>
 
 
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/bar_chart"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            />
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_small" >
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pie_chart"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                />
+        </FrameLayout>
 
     </LinearLayout>
 </ScrollView>

@@ -2,8 +2,6 @@ package it.fmistri.dontdieplease.fragment.statistics;
 
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
-import android.graphics.drawable.Drawable;
-import android.icu.text.TimeZoneFormat;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,38 +9,34 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendForm;
-import com.github.mikephil.charting.components.LimitLine;
-import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.utils.Utils;
-
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import it.fmistri.dontdieplease.R;
-import it.fmistri.dontdieplease.db.Entry;
-import it.fmistri.dontdieplease.db.Report;
+import it.fmistri.dontdieplease.db.Monitor;
 import it.fmistri.dontdieplease.db.StatisticEntry;
 
 /**
@@ -50,8 +44,12 @@ import it.fmistri.dontdieplease.db.StatisticEntry;
  */
 public class StatisticsFragment extends Fragment {
     private LineChart lineChart;
-    private BarChart barChart;
+    private PieChart pieChart;
     private StatisticsViewModel viewModel;
+
+    // Temporary data
+    int triggerMonitorCount = 0;
+    int totalMonitorCount = 0;
 
     @Nullable
     @Override
@@ -67,18 +65,36 @@ public class StatisticsFragment extends Fragment {
         viewModel = new ViewModelProvider(requireActivity()).get(StatisticsViewModel.class);
 
         lineChart = view.findViewById(R.id.line_chart);
-        barChart = view.findViewById(R.id.bar_chart);
+        pieChart = view.findViewById(R.id.pie_chart);
 
         // Initialize charts
         setupLineChart();
-        setupBarChart();
+        setupPieChart();
 
         // Observe ViewModel and update charts
         viewModel.getLastWeeksEntries("heart").observe(getViewLifecycleOwner(),
                 new Observer<StatisticEntry[]>() {
             @Override
             public void onChanged(StatisticEntry[] entries) {
+                lineChart.clear();
                 setLineChartData(entries);
+            }
+        });
+
+        viewModel.getAllMonitors().observe(getViewLifecycleOwner(), new Observer<Monitor[]>() {
+            @Override
+            public void onChanged(Monitor[] allMonitors) {
+                totalMonitorCount = allMonitors.length;
+                setPieChartData();
+            }
+        });
+
+        viewModel.getTriggeredMonitors().observe(getViewLifecycleOwner(),
+                new Observer<Monitor[]>() {
+            @Override
+            public void onChanged(Monitor[] triggeredMonitors) {
+                triggerMonitorCount = triggeredMonitors.length;
+                setPieChartData();
             }
         });
     }
@@ -123,43 +139,6 @@ public class StatisticsFragment extends Fragment {
         // axis range
         yAxis.setAxisMaximum(180f);
         yAxis.setAxisMinimum(0f);
-    }
-
-    private void setupBarChart() {
-        /* ***  Chart Style *** */
-        barChart.setDrawBarShadow(false);
-        barChart.setDrawValueAboveBar(true);
-
-        barChart.getDescription().setEnabled(false);
-        barChart.setPinchZoom(false);
-        barChart.setDrawGridBackground(false);
-
-        XAxis xAxis = barChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setDrawGridLines(false);
-        xAxis.setLabelCount(4);
-
-        // Setup formatter for x labels
-        final Locale loc = getResources().getConfiguration().locale;
-        final DateFormat format = DateFormat.getDateInstance(DateFormat.SHORT, loc);
-        xAxis.setValueFormatter(new ValueFormatter() {
-            @Override
-            public String getFormattedValue(float value) {
-                return format.format(new Date((long) value));
-            }
-        });
-
-        YAxis leftAxis = barChart.getAxisLeft();
-        leftAxis.setLabelCount(8, false);
-        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
-        leftAxis.setSpaceTop(15f);
-        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
-
-        YAxis rightAxis = barChart.getAxisRight();
-        rightAxis.setDrawGridLines(false);
-        rightAxis.setLabelCount(8, false);
-        rightAxis.setSpaceTop(15f);
-        rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
     }
 
     private void setLineChartData(StatisticEntry[] entries) {
@@ -227,10 +206,32 @@ public class StatisticsFragment extends Fragment {
     }
 
     /**
-     * When the reports for the last week are updated, the chart data is updated too.
-     * @param reports The updated reports.
+     * Setup the pie chart used for monitor statistics.
      */
-    void setBarChartData(Report[] reports) {
+    private void setupPieChart() {
+        pieChart.setDescription(null);
+        pieChart.setHoleRadius(0);
+        pieChart.setTransparentCircleRadius(0);
+        pieChart.animateXY(300, 300);
+    }
 
+    /**
+     * Reset the pie chart data by using {@link StatisticsFragment#triggerMonitorCount} and
+     * {@link StatisticsFragment#totalMonitorCount}.
+     */
+    private void setPieChartData() {
+        // It's physiological for the model to have totalMonitorCount >= triggeredMonitorCount.
+        // However, since changes are observed over time, there might be inconsistencies.
+        // In this case, prevent negative values to appear.
+        int safeMonitorCount = Math.max(0, totalMonitorCount - triggerMonitorCount);
+
+        ArrayList<PieEntry> entries = new ArrayList<>();
+        entries.add(new PieEntry(safeMonitorCount, getString(R.string.safe)));
+        entries.add(new PieEntry(triggerMonitorCount, getString(R.string.warning)));
+
+        PieDataSet dataSet = new PieDataSet(entries, getString(R.string.monitors));
+        dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        pieChart.setData(new PieData(dataSet));
+        pieChart.invalidate();
     }
 }
