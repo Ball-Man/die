@@ -1,2 +1,3 @@
 rootProject.name='Dont Die Please'
 include ':app'
+include 'MPChartLib'

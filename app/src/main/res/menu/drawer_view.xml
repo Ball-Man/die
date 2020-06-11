@@ -5,6 +5,11 @@
             android:id="@+id/item_home"
             android:title="@string/home"
             android:checked="true" />
+
+        <item
+            android:id="@+id/item_statistics"
+            android:title="@string/statistics" />
+
         <item
             android:id="@+id/item_calendar"
             android:title="@string/calendar" />

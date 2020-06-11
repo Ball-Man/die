@@ -20,6 +20,7 @@ import it.fmistri.dontdieplease.db.Category;
 import it.fmistri.dontdieplease.db.DieDatabase;
 import it.fmistri.dontdieplease.fragment.home.HomeFragment;
 import it.fmistri.dontdieplease.fragment.notifications.NotificationsFragment;
+import it.fmistri.dontdieplease.fragment.statistics.StatisticsFragment;
 import it.fmistri.dontdieplease.util.NotificationBuilder;
 
 public class MainActivity extends AppCompatActivity {
@@ -94,6 +95,10 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.item_calendar:
                 cl = CalendarFragment.class;
+                break;
+
+            case R.id.item_statistics:
+                cl = StatisticsFragment.class;
                 break;
 
             case R.id.item_notifications:
