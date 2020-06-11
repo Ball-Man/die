@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendForm;
@@ -41,13 +42,15 @@ import java.util.Locale;
 
 import it.fmistri.dontdieplease.R;
 import it.fmistri.dontdieplease.db.Entry;
+import it.fmistri.dontdieplease.db.Report;
 import it.fmistri.dontdieplease.db.StatisticEntry;
 
 /**
  * Fragment used for statistics. Will show data in graphs.
  */
 public class StatisticsFragment extends Fragment {
-    private LineChart chart;
+    private LineChart lineChart;
+    private BarChart barChart;
     private StatisticsViewModel viewModel;
 
     @Nullable
@@ -63,10 +66,12 @@ public class StatisticsFragment extends Fragment {
         // Retrieve ViewModel
         viewModel = new ViewModelProvider(requireActivity()).get(StatisticsViewModel.class);
 
-        chart = view.findViewById(R.id.line_chart);
+        lineChart = view.findViewById(R.id.line_chart);
+        barChart = view.findViewById(R.id.bar_chart);
 
         // Initialize charts
         setupLineChart();
+        setupBarChart();
 
         // Observe ViewModel and update charts
         viewModel.getLastWeeksEntries("heart").observe(getViewLifecycleOwner(),
@@ -82,24 +87,20 @@ public class StatisticsFragment extends Fragment {
      * Set style for the line chart(showing weekly heart values).
      */
     private void setupLineChart() {
-        /* ***  Chart Style *** */
-        // background color
-        chart.setBackgroundColor(Color.WHITE);
-
-        // disable description text
-        chart.getDescription().setEnabled(false);
-        chart.setTouchEnabled(true);
-
-        chart.setDrawGridBackground(false);
+        // General style
+        lineChart.setBackgroundColor(Color.WHITE);
+        lineChart.getDescription().setEnabled(false);
+        lineChart.setTouchEnabled(true);
+        lineChart.setDrawGridBackground(false);
 
         // enable scaling and dragging
-        chart.setDragEnabled(true);
-        chart.setScaleEnabled(true);
-        chart.setPinchZoom(true);
+        lineChart.setDragEnabled(true);
+        lineChart.setScaleEnabled(true);
+        lineChart.setPinchZoom(true);
 
-        // // X-Axis Style // //
+        // X axis
         XAxis xAxis;
-        xAxis = chart.getXAxis();
+        xAxis = lineChart.getXAxis();
 
         // Set date a value formatter to print dates instead of timestamps
         final Locale loc = getResources().getConfiguration().locale;
@@ -111,18 +112,12 @@ public class StatisticsFragment extends Fragment {
             }
         });
         xAxis.setLabelCount(4, true);
+        xAxis.setLabelRotationAngle(90);
 
-        // vertical grid lines
-        xAxis.enableGridDashedLine(10f, 10f, 0f);
-
+        // Y axis
         YAxis yAxis;
-        // // Y-Axis Style // //
-        yAxis = chart.getAxisLeft();
-
-        // disable dual axis (only use LEFT axis)
-        chart.getAxisRight().setEnabled(false);
-
-        // horizontal grid lines
+        yAxis = lineChart.getAxisLeft();
+        lineChart.getAxisRight().setEnabled(false); // Make sure there is only one Y axis
         yAxis.enableGridDashedLine(10f, 10f, 0f);
 
         // axis range
@@ -130,80 +125,112 @@ public class StatisticsFragment extends Fragment {
         yAxis.setAxisMinimum(0f);
     }
 
+    private void setupBarChart() {
+        /* ***  Chart Style *** */
+        barChart.setDrawBarShadow(false);
+        barChart.setDrawValueAboveBar(true);
+
+        barChart.getDescription().setEnabled(false);
+        barChart.setPinchZoom(false);
+        barChart.setDrawGridBackground(false);
+
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setLabelCount(4);
+
+        // Setup formatter for x labels
+        final Locale loc = getResources().getConfiguration().locale;
+        final DateFormat format = DateFormat.getDateInstance(DateFormat.SHORT, loc);
+        xAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return format.format(new Date((long) value));
+            }
+        });
+
+        YAxis leftAxis = barChart.getAxisLeft();
+        leftAxis.setLabelCount(8, false);
+        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+        leftAxis.setSpaceTop(15f);
+        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+
+        YAxis rightAxis = barChart.getAxisRight();
+        rightAxis.setDrawGridLines(false);
+        rightAxis.setLabelCount(8, false);
+        rightAxis.setSpaceTop(15f);
+        rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+    }
+
     private void setLineChartData(StatisticEntry[] entries) {
         ArrayList<com.github.mikephil.charting.data.Entry> values = new ArrayList<>();
-
-        for (int i = 0; i < entries.length; i++) {
-            values.add(new com.github.mikephil.charting.data.Entry(entries[i].date.getTime(),
-                    entries[i].entry.value.floatValue()));
-        }
-
         LineDataSet set1;
 
-        if (chart.getData() != null &&
-                chart.getData().getDataSetCount() > 0) {
-            set1 = (LineDataSet) chart.getData().getDataSetByIndex(0);
+        // Generate data for the chart
+        for (StatisticEntry entry : entries) {
+            values.add(new com.github.mikephil.charting.data.Entry(entry.date.getTime(),
+                    entry.entry.value.floatValue()));
+        }
+
+        if (lineChart.getData() != null &&
+                lineChart.getData().getDataSetCount() > 0) {
+            set1 = (LineDataSet) lineChart.getData().getDataSetByIndex(0);
             set1.setValues(values);
             set1.notifyDataSetChanged();
-            chart.getData().notifyDataChanged();
-            chart.notifyDataSetChanged();
+            lineChart.getData().notifyDataChanged();
+            lineChart.notifyDataSetChanged();
         } else {
-            // create a dataset and give it a type
+            // Create dataset
             set1 = new LineDataSet(values, getString(R.string.heart));
-
             set1.setDrawIcons(false);
 
-            // draw dashed line
+            // Line and points
             set1.enableDashedLine(10f, 5f, 0f);
-
-            // black lines and points
             set1.setColor(Color.BLACK);
             set1.setCircleColor(Color.BLACK);
-
-            // line thickness and point size
             set1.setLineWidth(1f);
             set1.setCircleRadius(3f);
-
-            // draw points as solid circles
             set1.setDrawCircleHole(false);
+            set1.enableDashedHighlightLine(10f, 5f, 0f);
 
-            // customize legend entry
+            // Legend
             set1.setFormLineWidth(1f);
             set1.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
             set1.setFormSize(15.f);
 
-            // text size of values
+            // Text
             set1.setValueTextSize(9f);
 
-            // draw selection line as dashed
-            set1.enableDashedHighlightLine(10f, 5f, 0f);
-
-            // set the filled area
+            // Fill area
             set1.setDrawFilled(true);
             set1.setFillFormatter(new IFillFormatter() {
                 @Override
                 public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
-                    return chart.getAxisLeft().getAxisMinimum();
+                    return lineChart.getAxisLeft().getAxisMinimum();
                 }
             });
 
+            // Set the data to the chart
             ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-            dataSets.add(set1); // add the data sets
-
-            // create a data object with the data sets
+            dataSets.add(set1);
             LineData data = new LineData(dataSets);
 
-            // set data
-            chart.setData(data);
+            lineChart.setData(data);
         }
 
-        // draw points over time
-        chart.animateY(500);
+        // Set animation
+        lineChart.animateY(500);
 
-        // get the legend (only possible after setting data)
-        Legend l = chart.getLegend();
-
-        // draw legend entries as lines
+        // Setup the legend
+        Legend l = lineChart.getLegend();
         l.setForm(LegendForm.LINE);
+    }
+
+    /**
+     * When the reports for the last week are updated, the chart data is updated too.
+     * @param reports The updated reports.
+     */
+    void setBarChartData(Report[] reports) {
+
     }
 }
