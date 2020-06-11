@@ -3,6 +3,7 @@
 
     <!-- Drawer -->
     <string name="home" translatable="false">Home</string>
+    <string name="statistics">Statistics</string>
     <string name="calendar">Calendar</string>
     <string name="notifications">Notifications</string>
 
@@ -13,6 +14,11 @@
     <string name="value">Value</string>
     <string name="invalid_category">Reports may not have the same category more than once</string>
     <string name="invalid_double_value">Values may be decimal rational numbers</string>
+
+    <!-- Home -->
+    <string name="contains">Contains</string>
+    <string name="search">Search</string>
+    <string name="no_category">No category selected</string>
 
     <!-- Categories -->
     <string name="heart">Heartbeats per minute</string>
@@ -40,10 +46,8 @@
     <string name="remove">Remove</string>
     <string name="warning_title">Health warning</string>
     <string name="warning_content">Your %s exceeded the value of %.2f</string>
-    <string name="contains">Contains</string>
-    <string name="search">Search</string>
-    <string name="no_category">No category selected</string>
-    <string name="statistics">Statistics</string>
+
+    <!-- Statistics -->
     <string name="heart_weekly">This week\'s heartbeat</string>
     <string name="safe">Safe</string>
     <string name="warning">Warning</string>
