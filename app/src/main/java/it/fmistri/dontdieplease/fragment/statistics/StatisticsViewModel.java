@@ -3,21 +3,20 @@ package it.fmistri.dontdieplease.fragment.statistics;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.sql.Time;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import it.fmistri.dontdieplease.db.DieDatabase;
-import it.fmistri.dontdieplease.db.Entry;
+import it.fmistri.dontdieplease.db.StatisticEntry;
 
 /**
  * Made to work with {@link StatisticsFragment}.
  */
 public class StatisticsViewModel extends ViewModel {
-    private LiveData<Entry[]> entries;
+    private LiveData<StatisticEntry[]> entries;
     private String category;
 
-    public LiveData<Entry[]> getLastWeeksEntries(String category) {
+    public LiveData<StatisticEntry[]> getLastWeeksEntries(String category) {
         if (category == null || entries == null || !category.equals(this.category)) {
             // Calculate last weeks timestamps
             GregorianCalendar calendar = new GregorianCalendar();

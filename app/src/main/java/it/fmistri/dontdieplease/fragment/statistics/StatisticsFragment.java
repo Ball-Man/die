@@ -41,13 +41,14 @@ import java.util.Locale;
 
 import it.fmistri.dontdieplease.R;
 import it.fmistri.dontdieplease.db.Entry;
+import it.fmistri.dontdieplease.db.StatisticEntry;
 
 /**
  * Fragment used for statistics. Will show data in graphs.
  */
 public class StatisticsFragment extends Fragment {
-    LineChart chart;
-    StatisticsViewModel viewModel;
+    private LineChart chart;
+    private StatisticsViewModel viewModel;
 
     @Nullable
     @Override
@@ -69,9 +70,9 @@ public class StatisticsFragment extends Fragment {
 
         // Observe ViewModel and update charts
         viewModel.getLastWeeksEntries("heart").observe(getViewLifecycleOwner(),
-                new Observer<Entry[]>() {
+                new Observer<StatisticEntry[]>() {
             @Override
-            public void onChanged(Entry[] entries) {
+            public void onChanged(StatisticEntry[] entries) {
                 setLineChartData(entries);
             }
         });
@@ -129,11 +130,12 @@ public class StatisticsFragment extends Fragment {
         yAxis.setAxisMinimum(0f);
     }
 
-    private void setLineChartData(Entry[] entries) {
+    private void setLineChartData(StatisticEntry[] entries) {
         ArrayList<com.github.mikephil.charting.data.Entry> values = new ArrayList<>();
 
         for (int i = 0; i < entries.length; i++) {
-            values.add(new com.github.mikephil.charting.data.Entry(i, entries[i].value.floatValue()));
+            values.add(new com.github.mikephil.charting.data.Entry(entries[i].date.getTime(),
+                    entries[i].entry.value.floatValue()));
         }
 
         LineDataSet set1;
