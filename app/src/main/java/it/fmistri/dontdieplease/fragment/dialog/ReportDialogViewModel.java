@@ -56,4 +56,17 @@ public class ReportDialogViewModel extends ViewModel {
             }
         });
     }
+
+    /**
+     * Delete a report based on the report id.
+     * @param reportId The report id.
+     */
+    public void deleteReport(final long reportId) {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                DieDatabase.getInstance(null).reportDAO().removeReport(reportId);
+            }
+        });
+    }
 }

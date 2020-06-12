@@ -170,15 +170,26 @@ public class ReportDialogFragment extends DialogFragment {
         // confirms.
         report = new ReportWithEntries();
 
-        if (edit)
+        if (edit) {
             // Edit mode
             viewModel.getReport(reportId).observe(getViewLifecycleOwner(),
                     new Observer<ReportWithEntries>() {
+                        @Override
+                        public void onChanged(ReportWithEntries report) {
+                            changedReport(report);
+                        }
+                    });
+
+            // Manage the delete button
+            MaterialButton deleteButton = view.findViewById(R.id.delete_button);
+            deleteButton.setVisibility(View.VISIBLE);
+            deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onChanged(ReportWithEntries report) {
-                    changedReport(report);
+                public void onClick(View v) {
+                    delete();
                 }
             });
+        }
 
         // Set callback for the 'done' button
         ((MaterialButton) view.findViewById(R.id.done)).setOnClickListener(new View.OnClickListener() {
@@ -395,5 +406,13 @@ public class ReportDialogFragment extends DialogFragment {
      */
     public void setOnDismissListener(OnDismissListener listener) {
         this.listener = listener;
+    }
+
+    /**
+     * Delete the selected report(can't be undone).
+     */
+    public void delete() {
+        viewModel.deleteReport(reportId);
+        dismiss();
     }
 }

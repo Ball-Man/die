@@ -7,7 +7,8 @@ import androidx.room.ForeignKey;
 
 @Entity(primaryKeys = {"report_id", "category_name"},
         foreignKeys = {
-            @ForeignKey(entity=Report.class, parentColumns = "r_id", childColumns = "report_id"),
+            @ForeignKey(entity=Report.class, parentColumns = "r_id", childColumns = "report_id",
+                    onDelete = ForeignKey.CASCADE),
             @ForeignKey(entity=Category.class, parentColumns = "name",
                     childColumns = "category_name")
         }

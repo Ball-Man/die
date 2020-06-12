@@ -20,6 +20,9 @@ public abstract class ReportDAO {
     @Query("SELECT * FROM `Report` WHERE `date` BETWEEN :startDate AND :endDate")
     public abstract Report[] getReports(Date startDate, Date endDate);
 
+    @Query("DELETE FROM `Report` WHERE `r_id`=:id")
+    public abstract void removeReport(long id);
+
     @Query("SELECT AVG(`value`) as `avg_value`, `category_name` FROM `Report` " +
             "INNER JOIN `Entry` ON `report_id`=`r_id` " +
             "INNER JOIN `Category` ON `category_name`=`name` " +

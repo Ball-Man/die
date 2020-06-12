@@ -12,6 +12,7 @@
     <!-- Dialog -->
     <string name="note">Notes</string>
     <string name="done">Done</string>
+    <string name="delete">Delete</string>
     <string name="dialog_report_title">Insert a new report</string>
     <string name="dialog_report_title_edit">Edit report</string>
     <string name="value">Value</string>

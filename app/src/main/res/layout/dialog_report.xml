@@ -33,13 +33,29 @@
             android:inputType="text"
             android:layout_marginTop="@dimen/dialog_line_margin_small"/>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/done"
-            android:text="@string/done"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dialog_line_margin"
-             />
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dialog_line_margin" >
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/done"
+                android:text="@string/done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                 />
+
+            <com.google.android.material.button.MaterialButton
+                android:textColor="@color/red"
+                android:id="@+id/delete_button"
+                android:visibility="gone"
+                android:text="@string/delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_small"
+                style="@style/Widget.MaterialComponents.Button.TextButton" />
+
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>
