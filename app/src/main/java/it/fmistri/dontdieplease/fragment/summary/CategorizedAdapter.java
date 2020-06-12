@@ -53,7 +53,7 @@ public class CategorizedAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         // Inflate the desired resource if needed
         if (convertView == null)
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.spinner_item, parent,
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.category_item, parent,
                     false);
 
         Categorized entry = (Categorized) getItem(position);

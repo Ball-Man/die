@@ -1,11 +1,9 @@
 package it.fmistri.dontdieplease.fragment.dialog;
 
 import android.content.Context;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
@@ -66,7 +64,7 @@ public class CategoryAdapter extends BaseAdapter {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         // Inflate the desired resource if needed
         if (convertView == null)
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.spinner_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.category_item, parent, false);
 
         Category category = (Category) getItem(position);
 
