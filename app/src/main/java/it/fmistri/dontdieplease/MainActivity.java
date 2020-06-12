@@ -1,6 +1,7 @@
 package it.fmistri.dontdieplease;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 
 import android.app.FragmentManager;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -24,11 +26,14 @@ import it.fmistri.dontdieplease.fragment.statistics.StatisticsFragment;
 import it.fmistri.dontdieplease.util.NotificationBuilder;
 
 public class MainActivity extends AppCompatActivity {
-    static String FRAGMENT_MAIN_TAG = "fragment_main";
+    private static String FRAGMENT_MAIN_TAG = "fragment_main";
 
-    DieDatabase db;
+    private DieDatabase db;
 
-    DrawerLayout drawerLayout;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private Toolbar toolbar;
+    ActionBarDrawerToggle drawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +48,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Populate drawer
         drawerLayout = findViewById(R.id.activity_main);
+        navigationView = findViewById(R.id.navigation_view);
+        toolbar = findViewById(R.id.toolbar);
 
         // Attach and configure the toolbar to the actionbar
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        setSupportActionBar(toolbar);
         Log.d("TOOLBAR", ((Toolbar) findViewById(R.id.toolbar)).toString());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -54,8 +61,15 @@ public class MainActivity extends AppCompatActivity {
             replaceFragment(HomeFragment.class);
         }
 
+        // Setup actionbar toggle
+        drawerToggle = setupDrawerToggle();
+        drawerToggle.setDrawerIndicatorEnabled(true);
+        drawerToggle.syncState();
+
+        drawerLayout.addDrawerListener(drawerToggle);
+
         // Add listener for the navigation view(when an item is selected)
-        ((NavigationView) findViewById(R.id.navigation_view)).setNavigationItemSelectedListener(
+        navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -74,10 +88,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Open or close the drawer
-        if (item.getItemId() == android.R.id.home) {
-            drawerLayout.openDrawer(GravityCompat.START);
+        if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -137,5 +162,15 @@ public class MainActivity extends AppCompatActivity {
         catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Create and return the actionbar toggle.
+     * @return The actionbar toggle.
+     */
+    private ActionBarDrawerToggle setupDrawerToggle() {
+        return new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open,
+                R.string.drawer_close);
+
     }
 }
