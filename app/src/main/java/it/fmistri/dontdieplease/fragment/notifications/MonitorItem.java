@@ -145,11 +145,30 @@ public class MonitorItem implements View.OnClickListener, Observer<Category[]> {
      * Send the current edited values to the ViewModel.
      */
     private void saveItem() {
-        // TODO: Validate data
+        if (!validateData())
+            return;
+
         monitor.threshold = Double.parseDouble(thresholdEdit.getText().toString());
         if (categorySpinner.getSelectedItem() != null)
             monitor.category_name = ((Category) categorySpinner.getSelectedItem()).name;
         viewModel.addMonitor(monitor);
+    }
+
+    /**
+     * Validate data inserted by the user.
+     * @return true if the data is fine, false is something's wrong.
+     */
+    private boolean validateData() {
+        boolean ret = true;
+        try {
+            Double.parseDouble(thresholdEdit.getText().toString());
+        }
+        catch (NullPointerException | NumberFormatException e) {
+            ret = false;
+            thresholdEdit.setError(context.getString(R.string.invalid_double_value));
+        }
+
+        return ret;
     }
 
     /**
