@@ -26,6 +26,8 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.button.MaterialButton;
+
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -176,7 +178,7 @@ public class ReportDialogFragment extends DialogFragment {
             });
 
         // Set callback for the 'done' button
-        ((TextView) view.findViewById(R.id.done)).setOnClickListener(new View.OnClickListener() {
+        ((MaterialButton) view.findViewById(R.id.done)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 done();

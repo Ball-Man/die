@@ -16,13 +16,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dialog_line_margin"
-            layout="@layout/layout_input_report" />
+            layout="@layout/report_line" />
 
         <include
             android:id="@+id/second_line"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            layout="@layout/layout_input_report" />
+            layout="@layout/report_line" />
 
         <EditText
             android:id="@+id/notes"
@@ -33,15 +33,13 @@
             android:inputType="text"
             android:layout_marginTop="@dimen/dialog_line_margin_small"/>
 
-        <TextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/done"
             android:text="@string/done"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dialog_line_margin"
-            android:gravity="end"
-            android:clickable="true"
-            android:focusable="true" />
+             />
 
     </LinearLayout>
 </ScrollView>
