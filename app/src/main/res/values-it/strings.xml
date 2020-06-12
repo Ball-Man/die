@@ -22,7 +22,8 @@
     <!-- Categories -->
     <string name="heart">Battiti cardiaci</string>
     <string name="temperature">Temperatura corporea</string>
-    <string name="pressure">Pressione del sangue</string>
+    <string name="systolic">Pressione massima</string>
+    <string name="diastolic">Pressione minima</string>
 
     <!-- Summary -->
     <string name="average">Valori medi:</string>

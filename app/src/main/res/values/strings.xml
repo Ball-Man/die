@@ -27,7 +27,8 @@
     <!-- Categories -->
     <string name="heart">Heartbeats per minute</string>
     <string name="temperature">Body temperature</string>
-    <string name="pressure">Blood pressure</string>
+    <string name="systolic">Systolic pressure</string>
+    <string name="diastolic">Diastolic pressure</string>
 
     <!-- Summary -->
     <string name="average">Average values:</string>

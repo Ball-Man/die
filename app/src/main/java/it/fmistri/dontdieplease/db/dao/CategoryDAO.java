@@ -12,7 +12,7 @@ public interface CategoryDAO {
     @Insert
     public abstract Long[] addCategories(Category... categories);
 
-    @Query("SELECT * FROM Category")
+    @Query("SELECT * FROM Category ORDER BY `importance` DESC")
     public abstract LiveData<Category[]> getCategories();
 
     @Query("DELETE FROM Category")

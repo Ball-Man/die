@@ -19,7 +19,7 @@ import it.fmistri.dontdieplease.db.dao.ReportDAO;
  */
 @Database(entities={Report.class, Entry.class, Category.class, NotificationsSettings.class,
         Monitor.class},
-        version=14)
+        version=15)
 @TypeConverters({DateConverter.class})
 public abstract class DieDatabase extends RoomDatabase {
     /**
