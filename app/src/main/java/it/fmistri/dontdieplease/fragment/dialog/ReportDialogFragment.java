@@ -119,7 +119,10 @@ public class ReportDialogFragment extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         // Set dialog title
-        getDialog().setTitle(R.string.dialog_report_title);
+        if (edit)
+            getDialog().setTitle(R.string.dialog_report_title_edit);
+        else
+            getDialog().setTitle(R.string.dialog_report_title);
 
         return inflater.inflate(R.layout.dialog_report, container);
     }

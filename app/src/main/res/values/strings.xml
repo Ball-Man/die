@@ -13,6 +13,7 @@
     <string name="note">Notes</string>
     <string name="done">Done</string>
     <string name="dialog_report_title">Insert a new report</string>
+    <string name="dialog_report_title_edit">Edit report</string>
     <string name="value">Value</string>
     <string name="invalid_category">Reports may not have the same category more than once</string>
     <string name="invalid_double_value">Values may be decimal rational numbers</string>

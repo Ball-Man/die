@@ -11,8 +11,9 @@
 
     <!-- Dialog -->
     <string name="note">Note</string>
-    <string name="done">Conferma</string>
+    <string name="done">Fatto</string>
     <string name="dialog_report_title">Inserisci un nuovo report</string>
+    <string name="dialog_report_title_edit">Modifica report</string>
     <string name="value">Valore</string>
     <string name="invalid_category">I report non devono contenere più occorrenze della stessa categoria</string>
     <string name="invalid_double_value">I valori inseriti devono essere valori decimali razionali</string>
