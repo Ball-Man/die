@@ -19,10 +19,13 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.ParseException;
+
 import it.fmistri.dontdieplease.R;
 import it.fmistri.dontdieplease.db.Category;
 import it.fmistri.dontdieplease.fragment.dialog.CategoryAdapter;
 import it.fmistri.dontdieplease.fragment.dialog.ReportDialogFragment;
+import it.fmistri.dontdieplease.util.NumberUtil;
 
 /**
  * Fragment implementation for the home tab of the application.
@@ -88,10 +91,15 @@ public class HomeFragment extends Fragment implements Observer<Category[]> {
         if (!validateFilter())
             return;
 
-        Fragment fragment = FilterSummaryFragment.newInstance(
-                ((Category) categorySpinner.getSelectedItem()).name,
-                Double.parseDouble(minValueEdit.getText().toString()),
-                Double.parseDouble(maxValueEdit.getText().toString()));
+        Fragment fragment = null;
+        try {
+            fragment = FilterSummaryFragment.newInstance(
+                    ((Category) categorySpinner.getSelectedItem()).name,
+                    NumberUtil.parseDouble(requireContext(), minValueEdit.getText().toString()),
+                    NumberUtil.parseDouble(requireContext(), maxValueEdit.getText().toString()));
+        }
+        catch (Exception ignore) { }    // This should never trigger, since there is a validation
+                                        // beforehand.
 
         getChildFragmentManager().beginTransaction()
                 .replace(R.id.fragment_home_search, fragment)
@@ -122,10 +130,10 @@ public class HomeFragment extends Fragment implements Observer<Category[]> {
 
         // EditTexts should be valid decimals
         try {
-            Double.parseDouble(minValueEdit.getText().toString());
-            Double.parseDouble(maxValueEdit.getText().toString());
+            NumberUtil.parseDouble(requireContext(), minValueEdit.getText().toString());
+            NumberUtil.parseDouble(requireContext(), maxValueEdit.getText().toString());
         }
-        catch (NullPointerException | NumberFormatException e) {
+        catch (NullPointerException | NumberFormatException | ParseException e) {
             minValueEdit.setError(getResources().getString(R.string.invalid_double_value));
             maxValueEdit.setError(getResources().getString(R.string.invalid_double_value));
             ret = false;

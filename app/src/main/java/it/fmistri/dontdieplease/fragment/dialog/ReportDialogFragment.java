@@ -28,6 +28,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.button.MaterialButton;
 
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -43,6 +44,7 @@ import it.fmistri.dontdieplease.db.Report;
 import it.fmistri.dontdieplease.db.ReportWithEntries;
 import it.fmistri.dontdieplease.fragment.summary.CategorizedAdapter;
 import it.fmistri.dontdieplease.functional.ArrayFunctional;
+import it.fmistri.dontdieplease.util.NumberUtil;
 
 public class ReportDialogFragment extends DialogFragment {
 
@@ -345,7 +347,13 @@ public class ReportDialogFragment extends DialogFragment {
             // Dump data from UI
             Entry entry = new Entry();
             entry.category_name = ((Category) categorySpinners[i].getSelectedItem()).name;
-            entry.value = Double.parseDouble(categoryEditTexts[i].getText().toString());
+
+            try {
+                entry.value = NumberUtil.parseDouble(requireContext(),
+                        categoryEditTexts[i].getText().toString());
+            }
+            catch (Exception ignored) { }   // This should never trigger, since the data is
+                                            // validate beforehand.
 
             // Set entry in the temporary array
             entries[i] = entry;
@@ -388,9 +396,9 @@ public class ReportDialogFragment extends DialogFragment {
 
             // All the input values should be parsable as doubles
             try {
-                Double.parseDouble(editText.getText().toString());
+                NumberUtil.parseDouble(requireContext(), editText.getText().toString());
             }
-            catch (NumberFormatException | NullPointerException e) {
+            catch (NumberFormatException | NullPointerException | ParseException e) {
                 editText.setError(getResources().getString(R.string.invalid_double_value));
                 ret = false;
             }

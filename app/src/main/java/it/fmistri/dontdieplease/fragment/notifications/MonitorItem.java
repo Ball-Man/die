@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.google.android.material.button.MaterialButton;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -28,6 +29,7 @@ import it.fmistri.dontdieplease.db.Category;
 import it.fmistri.dontdieplease.db.Monitor;
 import it.fmistri.dontdieplease.fragment.dialog.CategoryAdapter;
 import it.fmistri.dontdieplease.functional.ArrayFunctional;
+import it.fmistri.dontdieplease.util.NumberUtil;
 
 /**
  * Controller class used as listener for monitor views events.
@@ -148,7 +150,12 @@ public class MonitorItem implements View.OnClickListener, Observer<Category[]> {
         if (!validateData())
             return;
 
-        monitor.threshold = Double.parseDouble(thresholdEdit.getText().toString());
+        try {
+            monitor.threshold = NumberUtil.parseDouble(context, thresholdEdit.getText().toString());
+        }
+        catch (Exception ignored) { }   // This should never trigger, since there is a validation
+                                        // beforehand.
+
         if (categorySpinner.getSelectedItem() != null)
             monitor.category_name = ((Category) categorySpinner.getSelectedItem()).name;
         viewModel.addMonitor(monitor);
@@ -161,9 +168,9 @@ public class MonitorItem implements View.OnClickListener, Observer<Category[]> {
     private boolean validateData() {
         boolean ret = true;
         try {
-            Double.parseDouble(thresholdEdit.getText().toString());
+            NumberUtil.parseDouble(context, thresholdEdit.getText().toString());
         }
-        catch (NullPointerException | NumberFormatException e) {
+        catch (NullPointerException | NumberFormatException | ParseException e) {
             ret = false;
             thresholdEdit.setError(context.getString(R.string.invalid_double_value));
         }
