@@ -1,12 +1,12 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:dialogTheme">@style/AppThemeTitle</item>
     </style>
 
     <!-- Used to guarantee a title to the dialogs on all platforms -->s
-    <style name="AppThemeTitle" parent="Theme.MaterialComponents.DayNight.Dialog">
+    <style name="AppThemeTitle" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
         <item name="android:windowNoTitle">false</item>
     </style>
 
